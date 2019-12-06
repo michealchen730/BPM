@@ -50,9 +50,14 @@ public class UserController {
 
     }
 
-    @GetMapping("/register")
+    @GetMapping("/register_u")
     public String toRegister(){
-        return "register";
+        return "register_u";
+    }
+
+    @GetMapping("/register_s")
+    public String toRegisterS(){
+        return "register_s";
     }
 
     @PostMapping("/doregister")
@@ -76,6 +81,41 @@ public class UserController {
     @RequestMapping("/test")
     public String toTest(){
         return "test";
+    }
+
+
+    /**
+     * 去到管理员界面
+     * @return
+     */
+    @GetMapping("/admin")
+    public String toAdmin(){
+        return "admin";
+    }
+
+    @GetMapping("/um")
+    public String toAdminUM(){
+        return "admin_UM";
+    }
+
+    @GetMapping("/rc")
+    public String toAdminRC(){
+        return "admin_RC";
+    }
+
+    @GetMapping("/shopkeeper")
+    public String toShopkeeper(){
+        return "shopkeeper";
+    }
+
+    @GetMapping("/si")
+    public String toShopkeeperSI(){
+        return "shopkeeper_si";
+    }
+
+    @GetMapping("/shop")
+    public String toShop(){
+        return "user_shop";
     }
 
 

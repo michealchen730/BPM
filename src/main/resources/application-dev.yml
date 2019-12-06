@@ -26,6 +26,10 @@ spring:
     useGlobalDataSourceStat: true
     connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
 
+  devtools:
+    restart:
+      enabled: true  #设置开启热部署
+
   thymeleaf:
     cache: false
 
