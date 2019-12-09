@@ -119,4 +119,10 @@ public class UserController {
     }
 
 
+    @GetMapping("/manager_user_add")
+    public String toUserAdd(){
+        return "user_add";
+    }
+
+
 }

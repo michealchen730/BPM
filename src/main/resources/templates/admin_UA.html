@@ -77,7 +77,50 @@
             </th>
         </tr>
         </thead>
-        <tbody id="tbody">
+        <tbody>
+        <tr>
+            <th class="text-nowrap" scope="row">栅格系统行为</th>
+            <td>总是水平排列</td>
+            <td colspan="3">开始是堆叠在一起的，当大于这些阈值时将变为水平排列C</td>
+        </tr>
+        <tr>
+            <th class="text-nowrap" scope="row"><code>.container</code> 最大宽度</th>
+            <td>None （自动）</td>
+            <td>750px</td>
+            <td>970px</td>
+        </tr>
+        <tr>
+            <th class="text-nowrap" scope="row">类前缀</th>
+            <td><code>.col-xs-</code></td>
+            <td><code>.col-sm-</code></td>
+            <td><code>.col-md-</code></td>
+        </tr>
+        <tr>
+            <th class="text-nowrap" scope="row">列（column）数</th>
+            <td colspan="4">12</td>
+        </tr>
+        <tr>
+            <th class="text-nowrap" scope="row">最大列（column）宽</th>
+            <td class="text-muted">自动</td>
+            <td>~62px</td>
+            <td>~81px</td>
+        </tr>
+        <tr>
+            <th class="text-nowrap" scope="row">槽（gutter）宽</th>
+            <td colspan="4">30px （每列左右均有 15px）</td>
+        </tr>
+        <tr>
+            <th class="text-nowrap" scope="row">可嵌套</th>
+            <td colspan="4">是</td>
+        </tr>
+        <tr>
+            <th class="text-nowrap" scope="row">偏移（Offsets）</th>
+            <td colspan="4">是</td>
+        </tr>
+        <tr>
+            <th class="text-nowrap" scope="row">列排序</th>
+            <td colspan="4">是</td>
+        </tr>
         </tbody>
     </table>
 </div>
@@ -92,40 +135,37 @@
 <script src="/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script>
     $(document).ready(function () {
-        $.ajax({
-            url: "http://118.31.76.154:8080/Entity/U338ffb3af9551/BPM_H2H/User/",
-            contentType: "application/json",
-            type: "GET",
-            async:false,
-            //data: JSON.stringify(user),
-            success: function (result) {
-                console.log(result);
-                console.log(result.User[0]);
-                console.log($("#tbody"));
-
-                for (var i=0;i<result.User.length;i++) {
-                    var trHTML = '<tr>'+
-                        '<td>'+
-                            result.User[i].user_id+
-                        '</td>'+
-                        '<td>'+
-                            result.User[i].user_name+
-                        '</td>'+
-                        '<td>'+
-                            result.User[i].authority+
-                        '</td>'+
-                        '<td>'+
-                            '<a href="#">操作</a>'+
-                        '</td>'+
-                        '</tr>';
-                    $("#tbody").append(trHTML);
+        var btn=$("button#submit");
+        btn.click(function () {
+            var id=$("input#userId").val();
+            var name=$("input#userName").val();
+            var aut=$("input#userAuthority").val();
+            var pwd=$("input#userPassword").val();
+            var add=$("input#userAddress").val();
+            var lon=$("input#userLongitude").val();
+            var lat=$("input#userLatitude").val();
+            var user ={
+                user_id:id,
+                user_name:name,
+                password:pwd,
+                authority:aut,
+                user_address:add,
+                longitude:lon,
+                latitude:lat
+            };
+            console.log(user);
+            $.ajax({
+                url: "http://118.31.76.154:8080/Entity/U338ffb3af9551/BPM_H2H/User/",
+                contentType: "application/json",
+                type: "POST",
+                async:false,
+                data: JSON.stringify(user),
+                success: function (result) {
+                    alert("success");
                 }
-            }
+            });
         });
     });
 </script>
-
-
-
 </body>
 </html>
