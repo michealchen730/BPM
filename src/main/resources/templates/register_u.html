@@ -33,6 +33,40 @@
             </div><!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->
     </nav>
+
+    <div>
+        <form>
+            <div class="form-group">
+                <label for="accountID">用户ID</label>
+                <input type="text" class="form-control" id="accountID">
+            </div>
+            <div class="form-group">
+                <label for="accountName">账户名称</label>
+                <input type="text" class="form-control" id="accountName" placeholder="PPBZ">
+            </div>
+            <div class="form-group">
+                <label for="password">登陆密码</label>
+                <input type="password" class="form-control" id="password" placeholder="请输入密码">
+            </div>
+            <div class="form-group">
+                <label for="password_2">确认密码</label>
+                <input type="password" class="form-control" id="password_2" placeholder="请重输密码">
+            </div>
+            <div class="form-group">
+                <label for="address">收货地址</label>
+                <input type="text" class="form-control" id="address" placeholder="上海市闵行区东川路800号">
+            </div>
+            <div class="form-group">
+                <label for="lontitude">经度</label>
+                <input type="text" class="form-control" id="lontitude">
+            </div>
+            <div class="form-group">
+                <label for="latitude">纬度</label>
+                <input type="text" class="form-control" id="latitude">
+            </div>
+            <button type="submit" class="btn btn-default" id="submit">注册</button>
+        </form>
+    </div>
 </div>
 
 
@@ -40,5 +74,38 @@
 <script src="/webjars/jquery/3.2.1/dist/jquery.min.js"></script>
 <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
 <script src="/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script>
+    $(document).ready(function () {
+        var btn=$("button#submit");
+        btn.click(function () {
+            var id=$("input#accountID").val();
+            var name=$("input#accountName").val();
+            var pwd=$("input#password").val();
+            var add=$("input#address").val();
+            var lon=$("input#longitude").val();
+            var lat=$("input#latitude").val();
+            var user ={
+                user_id:id,
+                user_name:name,
+                password:pwd,
+                authority:"3",
+                user_address:add,
+                longitude:lon,
+                latitude:lat
+            };
+            console.log(user);
+            $.ajax({
+                url: "http://118.31.76.154:8080/Entity/U338ffb3af9551/BPM_H2H/User/",
+                contentType: "application/json",
+                type: "POST",
+                async:false,
+                data: JSON.stringify(user),
+                success: function (result) {
+                    alert("success");
+                }
+            });
+        });
+    });
+</script>
 </body>
 </html>

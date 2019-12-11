@@ -21,7 +21,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#">Brand</a>
+                <a class="navbar-brand" href="#">PPBZ</a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -93,7 +93,7 @@
 <script>
     $(document).ready(function () {
         $.ajax({
-            url: "http://118.31.76.154:8080/Entity/U338ffb3af9551/BPM_H2H/User/",
+            url: "http://118.31.76.154:8080/Entity/U338ffb3af9551/BPM_H2H/User/?User.authority=3",
             contentType: "application/json",
             type: "GET",
             async:false,
@@ -115,13 +115,20 @@
                             result.User[i].authority+
                         '</td>'+
                         '<td>'+
-                            '<a href="#">操作</a>'+
+                            '<a class="table_a" href="UD/?id=' + String(result.User[i].user_id) + "\"" + ">" + '操作</a>'+
                         '</td>'+
                         '</tr>';
                     $("#tbody").append(trHTML);
                 }
+
             }
         });
+
+
+
+
+
+
     });
 </script>
 

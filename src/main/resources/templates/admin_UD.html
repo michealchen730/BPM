@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Bootstrap -->
     <link href="/webjars/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link th:href="@{/css/user_detail.css}" rel="stylesheet" type="text/css"/>
     <title>管理员</title>
 </head>
 <body>
@@ -27,8 +28,8 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <li><a href="admin">商家管理 <span class="sr-only">(current)</span></a></li>
-                    <li><a href="um">用户管理</a></li>
-                    <li class="active"><a href="#">注册审核</a></li>
+                    <li class="active"><a href="#">用户管理</a></li>
+                    <li><a href="rc">注册审核</a></li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
                         <ul class="dropdown-menu">
@@ -58,65 +59,24 @@
     </nav>
 </div>
 
-<div class="container-fluid">
-    <div class="tabbable" id="tabs-426927">
-        <ul class="nav nav-tabs">
-            <li>
-                <a href="#panel-907209" data-toggle="tab">商家注册审核</a>
-            </li>
-            <li class="active">
-                <a href="#panel-5909" data-toggle="tab">用户注册审核</a>
-            </li>
-        </ul>
-        <div class="tab-content">
-            <div class="tab-pane" id="panel-907209">
-                <table class="table table-bordered">
-                    <thead>
-                    <tr>
-                        <th>商家登陆名</th>
-                        <th>
-                            商店名称
-                        </th>
-                        <th>
-                            商店位置
-                        </th>
-                        <th>
-                            操作一
-                        </th>
-                        <th>
-                            操作二
-                        </th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
+<div class="container-fluid" id="user_detail">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="loginname">登陆账户</label>
+                <input type="text" class="form-control" id="loginName" placeholder="Jane Doe">
             </div>
-            <div class="tab-pane active" id="panel-5909">
-                <table class="table table-bordered">
-                    <thead>
-                    <tr>
-                        <th>用户名</th>
-                        <th>
-                            用户权限
-                        </th>
-                        <th>
-                            操作一
-                        </th>
-                        <th>
-                            操作二
-                        </th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="username">登陆账户</label>
+                <input type="text" class="form-control" id="userName" placeholder="Jane Doe">
             </div>
         </div>
     </div>
-
-
-
+</div>
+<div>
+    <button type="button" class="btn btn-primary" ><a href="manager_user_add" style="color: black">添加用户</a></button>
 </div>
 
 
@@ -124,5 +84,42 @@
 <script src="/webjars/jquery/3.2.1/dist/jquery.min.js"></script>
 <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
 <script src="/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            url: "http://118.31.76.154:8080/Entity/U338ffb3af9551/BPM_H2H/User/?User.authority=3",
+            contentType: "application/json",
+            type: "GET",
+            async:false,
+            //data: JSON.stringify(user),
+            success: function (result) {
+                console.log(result);
+                console.log(result.User[0]);
+                console.log($("#tbody"));
+
+                for (var i=0;i<result.User.length;i++) {
+                    var trHTML = '<tr>'+
+                        '<td>'+
+                        result.User[i].user_id+
+                        '</td>'+
+                        '<td>'+
+                        result.User[i].user_name+
+                        '</td>'+
+                        '<td>'+
+                        result.User[i].authority+
+                        '</td>'+
+                        '<td>'+
+                        '<a href="#">操作</a>'+
+                        '</td>'+
+                        '</tr>';
+                    $("#tbody").append(trHTML);
+                }
+            }
+        });
+    });
+</script>
+
+
+
 </body>
 </html>

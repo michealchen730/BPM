@@ -4,6 +4,7 @@ import com.sjtu.springboot.model.User;
 import com.sjtu.springboot.service.serviceImpl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -122,6 +123,14 @@ public class UserController {
     @GetMapping("/manager_user_add")
     public String toUserAdd(){
         return "user_add";
+    }
+
+    @GetMapping("/UD")
+    public ModelAndView toUserDetail(String id){
+        ModelAndView mv=new ModelAndView();
+        mv.setViewName("admin_UD");
+        mv.addObject("id",id);
+        return mv;
     }
 
 
