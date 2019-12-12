@@ -84,6 +84,9 @@
         </tbody>
     </table>
 </div>
+<div>
+    <button type="button" class="btn btn-primary" ><a href="manager_store_add" style="color: black">添加商店</a></button>
+</div>
 
 
 <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
@@ -118,7 +121,7 @@
                         result.Store[i].store_address+
                         '</td>'+
                         '<td>'+
-                        '<a href="#">操作</a>'+
+                        '<a class="table_a" href="SD/?id=' + String(result.Store[i].store_id) + "\"" + ">" + '操作</a>'+
                         '</td>'+
                         '</tr>';
                     $("#tbody").append(trHTML);

@@ -17,6 +17,10 @@
                 <input type="text" class="form-control" id="storeId">
             </div>
             <div class="form-group">
+                <label for="LoginName">LoginName</label>
+                <input type="text" class="form-control" id="loginName">
+            </div>
+            <div class="form-group">
                 <label for="StoreName">StoreName</label>
                 <input type="text" class="form-control" id="storeName">
             </div>
@@ -36,10 +40,7 @@
                 <label for="StoreLatitude">storeLatitude</label>
                 <input type="text" class="form-control" id="storeLatitude">
             </div>
-            <button type="submit" class="btn btn-default" id="submit">添加</button>
-
-        </div>
-        <div class="col-md-6">
+            <button type="submit" class="btn btn-default" id="submit"><a href="/user/admin" style="color: black">添加</a></button>
 
         </div>
 
@@ -65,29 +66,29 @@
     $(document).ready(function () {
         var btn=$("button#submit");
         btn.click(function () {
-            var id=$("input#userId").val();
-            var name=$("input#userName").val();
-            var aut=$("input#userAuthority").val();
-            var pwd=$("input#userPassword").val();
-            var add=$("input#userAddress").val();
-            var lon=$("input#userLongitude").val();
-            var lat=$("input#userLatitude").val();
-            var user ={
-                user_id:id,
-                user_name:name,
+            var id=$("input#storeId").val();
+            var lname=$("input#loginName").val();
+            var sname=$("input#storeName").val();
+            var pwd=$("input#storePassword").val();
+            var add=$("input#storeAddress").val();
+            var lon=$("input#storeLongitude").val();
+            var lat=$("input#storeLatitude").val();
+            var store ={
+                store_id:id,
+                login_name:lname,
                 password:pwd,
-                authority:aut,
-                user_address:add,
+                store_name:sname,
+                store_address:add,
                 longitude:lon,
                 latitude:lat
             };
-            console.log(user);
+            console.log(store);
             $.ajax({
-                url: "http://118.31.76.154:8080/Entity/U338ffb3af9551/BPM_H2H/User/",
+                url: "http://118.31.76.154:8080/Entity/U338ffb3af9551/BPM_H2H/Store/",
                 contentType: "application/json",
                 type: "POST",
                 async:false,
-                data: JSON.stringify(user),
+                data: JSON.stringify(store),
                 success: function (result) {
                     alert("success");
                 }

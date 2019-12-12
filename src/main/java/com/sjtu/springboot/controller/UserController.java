@@ -125,10 +125,28 @@ public class UserController {
         return "user_add";
     }
 
+    @GetMapping("/manager_store_add")
+    public String toStoreAdd(){
+        return "store_add";
+    }
+
     @GetMapping("/UD")
     public ModelAndView toUserDetail(String id){
         ModelAndView mv=new ModelAndView();
         mv.setViewName("admin_UD");
+        mv.addObject("id",id);
+        return mv;
+    }
+
+    @GetMapping("/commodity_add")
+    public String toCommodityAdd(){
+        return "commodity_add";
+    }
+
+    @GetMapping("/SD")
+    public ModelAndView toStoreDetail(String id){
+        ModelAndView mv=new ModelAndView();
+        mv.setViewName("admin_SD");
         mv.addObject("id",id);
         return mv;
     }

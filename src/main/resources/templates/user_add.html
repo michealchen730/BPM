@@ -17,7 +17,11 @@
                 <input type="text" class="form-control" id="userId">
             </div>
             <div class="form-group">
-                <label for="UserName">UserID</label>
+                <label for="LoginName">LoginName</label>
+                <input type="text" class="form-control" id="loginName">
+            </div>
+            <div class="form-group">
+                <label for="UserName">UserName</label>
                 <input type="text" class="form-control" id="userName">
             </div>
             <div class="form-group">
@@ -33,6 +37,10 @@
                 <input type="text" class="form-control" id="userAddress" placeholder="userAddress">
             </div>
             <div class="form-group">
+                <label for="PhoneNumber">PhoneNumber</label>
+                <input type="text" class="form-control" id="phoneNumber" placeholder="userAddress">
+            </div>
+            <div class="form-group">
                 <label for="UserLongitude">UserLongitude</label>
                 <input type="text" class="form-control" id="userLongitude">
             </div>
@@ -40,7 +48,7 @@
                 <label for="UserLatitude">userLatitude</label>
                 <input type="text" class="form-control" id="userLatitude">
             </div>
-            <button type="submit" class="btn btn-default" id="submit">添加</button>
+            <button type="submit" class="btn btn-default" id="submit"><a href="um" style="color: black">添加</a></button>
 
         </div>
         <div class="col-md-6">
@@ -70,18 +78,22 @@
         var btn=$("button#submit");
         btn.click(function () {
             var id=$("input#userId").val();
-            var name=$("input#userName").val();
+            var uname=$("input#userName").val();
+            var lname=$("input#loginName").val();
             var aut=$("input#userAuthority").val();
             var pwd=$("input#userPassword").val();
             var add=$("input#userAddress").val();
             var lon=$("input#userLongitude").val();
             var lat=$("input#userLatitude").val();
+            var pnum=$("input#phoneNumber").val();
             var user ={
                 user_id:id,
-                user_name:name,
+                login_name:lname,
                 password:pwd,
                 authority:aut,
+                user_name:uname,
                 user_address:add,
+                phonenumber:pnum,
                 longitude:lon,
                 latitude:lat
             };
