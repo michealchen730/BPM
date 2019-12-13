@@ -162,3 +162,7 @@ a {
     color: #333;
     text-decoration: none;
 }
+
+#box_check{
+    padding-left: 35px;
+}

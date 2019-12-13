@@ -3,11 +3,14 @@ package com.sjtu.springboot.controller;
 import com.sjtu.springboot.model.User;
 import com.sjtu.springboot.service.serviceImpl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -39,10 +42,8 @@ public class UserController {
         List<User> list=userService.getAllUser();
         return new ModelAndView("showAllUser","list",list);
     }
-    @GetMapping("/login")
-    public String toLogin(){
-        return "login";
-    }
+
+
 
     @PostMapping("/dologin")
     public void doLogin(User user){
@@ -85,14 +86,7 @@ public class UserController {
     }
 
 
-    /**
-     * 去到管理员界面
-     * @return
-     */
-    @GetMapping("/admin")
-    public String toAdmin(){
-        return "admin";
-    }
+
 
     @GetMapping("/um")
     public String toAdminUM(){
@@ -104,10 +98,7 @@ public class UserController {
         return "admin_RC";
     }
 
-    @GetMapping("/shopkeeper")
-    public String toShopkeeper(){
-        return "shopkeeper";
-    }
+
 
     @GetMapping("/si")
     public String toShopkeeperSI(){
@@ -151,5 +142,54 @@ public class UserController {
         return mv;
     }
 
+    @GetMapping("/appuser")
+    public String toAppUser(){
+        return "appuser_map";
+    }
+
+
+    /**
+     * 去到管理员界面
+     * @param username
+     * @param request
+     * @return
+     */
+    @GetMapping("/admin")
+    public String toAdmin(String username, HttpServletRequest request){
+        request.getSession().setAttribute("nameofuser",username);
+        return "admin";
+    }
+
+    /**
+     * 去到商店店主界面
+     * @param username
+     * @param request
+     * @return
+     */
+    @GetMapping("/shopkeeper")
+    public String toShopkeeper(String username, HttpServletRequest request){
+        request.getSession().setAttribute("nameofuser",username);
+        return "shopkeeper";
+    }
+
+    /**
+     * 登陆
+     * @return
+     */
+    @GetMapping("/login")
+    public String toLogin(){
+        return "login";
+    }
+
+    /**
+     * 登出
+     * @param session
+     * @return
+     */
+    @GetMapping("/logout")
+    public String toLogout(HttpSession session) {
+        session.removeAttribute("nameofuser");
+        return "index";
+    }
 
 }
