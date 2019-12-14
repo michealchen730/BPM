@@ -154,9 +154,10 @@ public class UserController {
      * @param request
      * @return
      */
-    @GetMapping("/admin")
-    public String toAdmin(String username, HttpServletRequest request){
+    @GetMapping("/adminn")
+    public String toAdminn(String username, String userid,HttpServletRequest request){
         request.getSession().setAttribute("nameofuser",username);
+        request.getSession().setAttribute("idofuser",userid);
         return "admin";
     }
 
@@ -166,9 +167,10 @@ public class UserController {
      * @param request
      * @return
      */
-    @GetMapping("/shopkeeper")
-    public String toShopkeeper(String username, HttpServletRequest request){
+    @GetMapping("/shopkeeperr")
+    public String toShopkeeperr(String username, String userid,HttpServletRequest request){
         request.getSession().setAttribute("nameofuser",username);
+        request.getSession().setAttribute("idofuser",userid);
         return "shopkeeper";
     }
 
@@ -189,7 +191,42 @@ public class UserController {
     @GetMapping("/logout")
     public String toLogout(HttpSession session) {
         session.removeAttribute("nameofuser");
+        session.removeAttribute("idofuser");
         return "index";
+    }
+    /**
+     * 去到管理员界面
+     * @return
+     */
+    @GetMapping("/admin")
+    public String toAdmin(){
+        return "admin";
+    }
+
+    /**
+     * 去到商店店主界面
+     * @return
+     */
+    @GetMapping("/shopkeeper")
+    public String toShopkeeper(){
+        return "shopkeeper";
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+    @GetMapping("/testimg")
+    public String toTestIMG(){
+        return "test_img";
     }
 
 }

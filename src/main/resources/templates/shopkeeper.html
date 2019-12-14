@@ -5,9 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Bootstrap -->
     <link href="/webjars/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link th:href="@{/css/shopkeeper.css}" rel="stylesheet" type="text/css"/>
     <title>商家</title>
 </head>
 <body>
+<p id="p_userid" hidden th:text="${session.idofuser}"></p>
 <div class="container-fluid">
     <nav class="navbar navbar-default">
         <div class="container-fluid">
@@ -68,7 +70,7 @@
             <th>操作</th>
         </tr>
         </thead>
-        <tbody>
+        <tbody id="tbody">
         </tbody>
     </table>
     <a href="commodity_add" class="btn btn-primary btn-lg active" role="button">新增商品</a>
@@ -79,5 +81,53 @@
 <script src="/webjars/jquery/3.2.1/dist/jquery.min.js"></script>
 <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
 <script src="/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script>
+    $(document).ready(function () {
+        var p_userid=$("p#p_userid").text();
+        console.log(p_userid);
+        $.ajax({
+            url: "http://118.31.76.154:8080/Entity/U338ffb3af9551/BPM_H2H/Commodity/?Commodity.owner_id="+String(p_userid),
+            contentType: "application/json",
+            type: "GET",
+            async:false,
+            //data: JSON.stringify(user),
+            success: function (result) {
+                console.log(result.Commodity);
+                console.log($("#tbody"));
+
+                for (var i=0;i<result.Commodity.length;i++) {
+                    var trHTML = '<tr>'+
+                        '<td>'+
+                        result.Commodity[i].commodity_id+
+                        '</td>'+
+                        '<td>'+
+                        result.Commodity[i].commodity_name+
+                        '</td>'+
+                        '<td>'+
+                        result.Commodity[i].commodity_price+'元'+
+                        '</td>'+
+                        '<td>'+
+                        result.Commodity[i].description+
+                        '</td>'+
+                        '<td>'+
+                        '<img src="http://118.31.76.154:8080/file/U338ffb3af9551/BPM_H2H/Commodity/'+String(result.Commodity[i].id)+"\""+'> '+
+                        '</td>'+
+                        '<td>'+
+                        '<a class="table_a" href="#/?id=' + String(result.Commodity[i].commodity_id) + "\"" + ">" + '操作</a>'+
+                        '</td>'+
+                        '</tr>';
+                    $("#tbody").append(trHTML);
+                }
+
+            }
+        });
+
+
+
+
+
+
+    });
+</script>
 </body>
 </html>

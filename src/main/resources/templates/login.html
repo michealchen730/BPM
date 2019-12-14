@@ -34,7 +34,7 @@
               }else{
                 console.log(result.Store[0]);
                 if (result.Store[0].password===password){
-                  $(location).attr('href', '/user/shopkeeper?username='+String(result.Store[0].login_name));
+                  $(location).attr('href', '/user/shopkeeperr?username='+String(result.Store[0].login_name)+'&userid='+String(result.Store[0].store_id));
                 }else {
                   alert("密码错误");
                 }
@@ -60,7 +60,7 @@
                   alert("密码正确");
                   if (result.User[0].authority==="1"){
                     alert("您是管理员");
-                    $(location).attr('href', '/user/admin?username='+String(result.User[0].login_name));
+                    $(location).attr('href', '/user/adminn?username='+String(result.User[0].login_name)+'&userid='+String(result.User[0].user_id));
                   }else {
                     alert("您是普通用户");
                   }

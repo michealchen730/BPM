@@ -8,7 +8,6 @@
     <title>商品添加</title>
 </head>
 <body>
-
 <div class="container-fluid">
     <nav class="navbar navbar-default">
         <div class="container-fluid">
@@ -20,7 +19,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#">Brand</a>
+                <a class="navbar-brand" href="#">PPBZ</a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -48,8 +47,8 @@
                     <button type="submit" class="btn btn-default">Submit</button>
                 </form>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="user/login">Login</a></li>
-                    <li><a href="user/register">Register</a></li>
+                    <li><a href="user/login" th:text="'你好，'+${session.nameofuser}"></a></li>
+                    <li><a href="/user/logout">登出</a></li>
 
                 </ul>
             </div><!-- /.navbar-collapse -->
@@ -60,12 +59,20 @@
 <div>
     <form>
         <div class="form-group">
+            <label for="commodityID">商品ID</label>
+            <input type="text" class="form-control" id="commodityId">
+        </div>
+        <div class="form-group">
+            <label for="commodityID">商店ID</label>
+            <input type="text" class="form-control" id="storeId">
+        </div>
+        <div class="form-group">
             <label for="commodityname">商品名称</label>
-            <input type="text" class="form-control" id="commodityname">
+            <input type="text" class="form-control" id="commodityName">
         </div>
         <div class="form-group">
             <label for="commoditydesc">商品描述</label>
-            <input type="text" class="form-control" id="commoditydesc">
+            <input type="text" class="form-control" id="commodityDesc">
         </div>
         <div class="form-group">
             <label for="price">商品价格</label>
@@ -75,8 +82,9 @@
             <label for="InputImg">图片上传</label>
             <input type="file" id="InputImg">
         </div>
-        <button type="submit" class="btn btn-default">新增</button>
+        <a href="/user/shopkeeper" class="btn btn-primary btn-lg active" role="button" id="img_file_upload">新增商品</a>
     </form>
+
 </div>
 
 
@@ -84,5 +92,49 @@
 <script src="/webjars/jquery/3.2.1/dist/jquery.min.js"></script>
 <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
 <script src="/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script>
+    $("a#img_file_upload").click(function () {
+        var cid=$("input#commodityId").val();
+        var sid=$("input#storeId").val();
+        var name=$("input#commodityName").val();
+        var desc=$("input#commodityDesc").val();
+        var price=$("input#price").val();
+        var commodity ={
+            commodity_id:cid,
+            owner_id:sid,
+            commodity_name:name,
+            description:desc,
+            commodity_price:price
+        };
+        $.ajax({
+            url: "http://118.31.76.154:8080/Entity/U338ffb3af9551/BPM_H2H/Commodity/",
+            contentType: "application/json",
+            type: "POST",
+            async:false,
+            data: JSON.stringify(commodity),
+            success: function (result) {
+                var files = $(":file")[0].files;
+                var formData = new FormData();
+                formData.append("file", files[0]);
+                $.ajax({
+                    url: "http://118.31.76.154:8080/Entity/U338ffb3af9551/BPM_H2H/Commodity/"+String(result.id),
+                    type: "POST",
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function (data) {
+                        $(location).attr('href', '/user/shopkeeper');
+                    },
+                    error: function () {
+                        $(location).attr('href', '/user/shopkeeper');
+                    }
+                });
+
+            }
+        });
+    });
+</script>
 </body>
 </html>
+
+
