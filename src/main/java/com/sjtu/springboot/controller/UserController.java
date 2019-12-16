@@ -79,15 +79,9 @@ public class UserController {
             return "yes";
         }
     }
+    
 
-    @RequestMapping("/test")
-    public String toTest(){
-        return "test";
-    }
-
-
-
-
+    
     @GetMapping("/um")
     public String toAdminUM(){
         return "admin_UM";
@@ -212,21 +206,12 @@ public class UserController {
         return "shopkeeper";
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-    @GetMapping("/testimg")
-    public String toTestIMG(){
-        return "test_img";
+    @GetMapping("/consumer")
+    public String toConsumer(String username, String userid,HttpServletRequest request){
+        request.getSession().setAttribute("nameofuser",username);
+        request.getSession().setAttribute("idofuser",userid);
+        return "consumer_map";
     }
+    
 
 }

@@ -63,6 +63,7 @@
                     $(location).attr('href', '/user/adminn?username='+String(result.User[0].login_name)+'&userid='+String(result.User[0].user_id));
                   }else {
                     alert("您是普通用户");
+                    $(location).attr('href', '/user/consumer?username='+String(result.User[0].login_name)+'&userid='+String(result.User[0].user_id));
                   }
 
                 }else {
@@ -73,7 +74,6 @@
           });
 
         }
-
 
 
 
