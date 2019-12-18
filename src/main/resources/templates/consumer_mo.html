@@ -2,48 +2,15 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1 initial-scale=1.0, user-scalable=no">
-
-    <style type="text/css">
-        html{height:100%}
-        body{height:100%;margin:0px;padding:0px}
-        #container{height:100%}
-    </style>
-    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=ehUB62Wf6GlXZgL0WUDa27tnye7Zy04K"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
 
     <!-- Bootstrap -->
     <link href="/webjars/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-    <link th:href="@{/css/consumer_map.css}" rel="stylesheet" type="text/css"/>
+    <link th:href="@{/css/consumer_mo.css}" rel="stylesheet" type="text/css"/>
     <title>用户</title>
 </head>
 <body>
-<!-- sample modal content -->
-<div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel"></h4>
-            </div>
-            <div class="modal-body">
-                <h4>Text in a modal</h4>
-                <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula.</p>
-
-                <hr>
-
-                <h4>店铺地址</h4>
-                <p id="p_address"></p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                <a class="btn btn-primary" href="#" id="2GoodsBrowse" role="button">进店浏览</a>
-            </div>
-
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
 
 <!-- 购物车功能的尝试 -->
 <div id="shoppingCart" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -85,6 +52,8 @@
 
 
 
+
+
 <p id="p_userid" hidden th:text="${session.idofuser}"></p>
 <div class="container-fluid">
     <nav class="navbar navbar-default"  id="nav_header">
@@ -103,8 +72,9 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li class="active"><a href="#">周边浏览 <span class="sr-only">(current)</span></a></li>
-                    <li><a href="/user/mo">我的订单</a></li>
+                    <li><a href="/user/map">周边浏览 <span class="sr-only">(current)</span></a></li>
+                    <li><a href="si">我的订单</a></li>
+                    <li><a href="#"  class="active">商品浏览</a></li>
                     <li><a href="si">我的接单</a></li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
@@ -137,8 +107,20 @@
 </div>
 
 <div>
-    <!--百度地图容器-->
-    <div id="dituContent"></div>
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>订单ID</th>
+            <th>商品名称</th>
+            <th>商品价格</th>
+            <th>商品描述</th>
+            <th>商品图片</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody id="tbody">
+        </tbody>
+    </table>
 </div>
 
 
@@ -149,101 +131,44 @@
 <script src="/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 <script type="text/javascript">
-    //创建和初始化地图函数：
-
-
-    function initMap() {
-        createMap();//创建地图
-        setMapEvent();//设置地图事件
-
-        initStoreLocation();//初始化所有商店的设置
-        addMapControl();//向地图添加控件
-    }
-
-
-    //创建地图函数：
-    function createMap() {
-        var map = new BMap.Map("dituContent");//在百度地图容器中创建一个地图
-        var point = new BMap.Point(121.448583, 31.028823);//定义一个中心点坐标
-
-        map.centerAndZoom(point, 18);//设定地图的中心点和坐标并将地图显示在地图容器中
-        window.map = map;//将map变量存储在全局
-    }
-
-    //地图事件设置函数：
-    function setMapEvent() {
-        map.enableDragging();//启用地图拖拽事件，默认启用(可不写)
-        map.enableScrollWheelZoom();//启用地图滚轮放大缩小
-        map.enableDoubleClickZoom();//启用鼠标双击放大，默认启用(可不写)
-        map.enableKeyboard();//启用键盘上下左右键移动地图
-    }
-
-    //地图控件添加函数：
-    function addMapControl() {
-        //向地图中添加缩放控件
-        var ctrl_nav = new BMap.NavigationControl({ anchor: BMAP_ANCHOR_TOP_LEFT, type: BMAP_NAVIGATION_CONTROL_LARGE });
-        map.addControl(ctrl_nav);
-        //向地图中添加缩略图控件
-        var ctrl_ove = new BMap.OverviewMapControl({ anchor: BMAP_ANCHOR_BOTTOM_RIGHT, isOpen: 1 });
-        map.addControl(ctrl_ove);
-        //向地图中添加比例尺控件
-        var ctrl_sca = new BMap.ScaleControl({ anchor: BMAP_ANCHOR_BOTTOM_LEFT });
-        map.addControl(ctrl_sca);
-        var marker = new BMap.Marker(new BMap.Point(121.448583, 31.028823));
-        marker.addEventListener("click", function(){
-            alert("点击标注");
-        });
-        map.addOverlay(marker);
-
-
-    }
-
-    function addMarker(lon,lat,str) {
-        var marker = new BMap.Marker(new BMap.Point(lon, lat));
-        marker.setTitle(str);
-        marker.addEventListener("click", function(){
-            var sid=marker.getTitle();
-            $.ajax({
-                url: "http://118.31.76.154:8080/Entity/U338ffb3af9551/BPM_H2H/Store/?store_id="+sid,
-                contentType: "application/json",
-                type: "GET",
-                async:false,
-                success: function (result) {
-                    console.log(result.Store[0].store_name);
-                    $("#myModalLabel").html(result.Store[0].store_name);
-                    $("#p_address").html(result.Store[0].store_address);
-                    $("#2GoodsBrowse").attr("href","/user/consumer_cb?id="+result.Store[0].store_id);
-                }
-            });
-            $('#myModal').modal('show');
-        });
-        map.addOverlay(marker);
-    }
-
-
-    function initStoreLocation() {
+    $(document).ready(function () {
+        var sid=$('p#p_storeid').html();
+        console.log(sid);
         $.ajax({
-            url: "http://118.31.76.154:8080/Entity/U338ffb3af9551/BPM_H2H/Store/",
+            url: "http://118.31.76.154:8080/Entity/U338ffb3af9551/BPM_H2H/Commodity/?owner_id="+sid,
             contentType: "application/json",
             type: "GET",
             async:false,
             success: function (result) {
-                for(var i=0;i<result.Store.length;i++){
-                    var lon= parseFloat(result.Store[i].longitude);
-                    var lat= parseFloat(result.Store[i].latitude);
-                    var str= result.Store[i].store_id;
-                    addMarker(lon,lat,str);
+                console.log(result);
+                for (var i=0;i<result.Commodity.length;i++) {
+                    var trHTML = '<tr>'+
+                        '<td>'+
+                        result.Commodity[i].commodity_id+
+                        '</td>'+
+                        '<td>'+
+                        result.Commodity[i].commodity_name+
+                        '</td>'+
+                        '<td>'+
+                        result.Commodity[i].commodity_price+'元'+
+                        '</td>'+
+                        '<td>'+
+                        result.Commodity[i].description+
+                        '</td>'+
+                        '<td>'+
+                        '<img src="http://118.31.76.154:8080/file/U338ffb3af9551/BPM_H2H/Commodity/'+String(result.Commodity[i].id)+"\""+'> '+
+                        '</td>'+
+                        '<td>'+
+                        '<a class="table_a"><span id="span_cid" hidden>'+String(result.Commodity[i].commodity_id)+'</span><span id="span_cname" hidden>'+String(result.Commodity[i].commodity_name)+'</span><span id="span_cprice" hidden>'+String(result.Commodity[i].commodity_price)+'</span>加入购物车</a>'+
+                        '</td>'+
+                        '</tr>';
+                    $("#tbody").append(trHTML);
                 }
             }
         });
 
-    }
 
 
-    initMap();//创建和初始化地图
-
-
-    $(document).ready(function () {
         $("a#myShoppingCart").click(function () {
             $("#shoppingcart_tbody").html("");
             var userid=$("#p_userid").text();
@@ -289,7 +214,7 @@
 
             $("#shoppingCart").modal('show');
 
-        });
+        })
 
 
         $("a#settleAccounts").click(function () {
@@ -387,15 +312,12 @@
 
         })
 
-
-
-
-
-    })
-
+    });
 
 
 </script>
+
+
 
 
 </body>

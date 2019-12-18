@@ -226,6 +226,11 @@ public class UserController {
         return "consumer_map";
     }
 
+    @GetMapping("/mo")
+    public String toMyOrder(){
+        return "consumer_mo";
+    }
+
 
 
 }
