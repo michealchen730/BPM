@@ -212,6 +212,20 @@ public class UserController {
         request.getSession().setAttribute("idofuser",userid);
         return "consumer_map";
     }
-    
+
+    @GetMapping("/consumer_cb")
+    public ModelAndView toCCommodityBrowse(String id){
+        ModelAndView mv=new ModelAndView();
+        mv.setViewName("consumer_cb");
+        mv.addObject("id",id);
+        return mv;
+    }
+
+    @GetMapping("/map")
+    public String toConsumerMap(){
+        return "consumer_map";
+    }
+
+
 
 }
