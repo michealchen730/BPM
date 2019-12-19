@@ -231,6 +231,22 @@ public class UserController {
         return "consumer_mo";
     }
 
+    @GetMapping("/mmo")
+    public String toMessengerMyOrder(){
+        return "messenger_mo";
+    }
+
+
+
+    @GetMapping("/templates")
+    public String toTemplates(){
+        return "templates";
+    }
+
+    @GetMapping("/templates_test")
+    public String toTemplatesTest(){
+        return "templates_test";
+    }
 
 
 }

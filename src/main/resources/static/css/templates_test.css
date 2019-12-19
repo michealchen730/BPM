@@ -1,0 +1,32 @@
+.container-fluid{
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 0;
+    padding-right: 0;
+}
+.navbar-header{
+    margin-left: 420px;
+}
+.navbar-right{
+    margin-right: 440px;
+}
+#header_search{
+    margin-top: 1px;
+    height: 32px;
+    width: 180px;
+    border-top-right-radius: 16px;
+    border-top-left-radius: 16px;
+    border-bottom-right-radius:16px;
+    border-bottom-left-radius:16px;
+}
+#header_search_group{
+    margin-left: 308px;
+}
+
+#main_content{
+    margin-top: 51px;
+}
+#glyphicon_search{
+    margin-top: 9px;
+    margin-right: 580px;
+}

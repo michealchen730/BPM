@@ -1,0 +1,12 @@
+.container-fluid{
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 0;
+    padding-right: 0;
+}
+.navbar-header{
+    margin-left: 360px;
+}
+.navbar-right{
+    margin-right: 380px;
+}
