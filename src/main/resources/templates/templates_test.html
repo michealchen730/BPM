@@ -14,34 +14,38 @@
     <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="row">
             <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
+            <div class="col-md-2 col-md-offset-2" id="div_brand">
                 <a class="navbar-brand" disabled="true" >PPBZ 随手递平台</a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <div class="col-md-3" id="div_header_ul">
                 <ul class="nav navbar-nav">
                     <li class="active"><a href="#">商家管理 <span class="sr-only">(current)</span></a></li>
                     <li><a href="um">用户管理</a></li>
                     <li><a href="rc">注册审核</a></li>
                 </ul>
+            </div><!-- /.navbar-collapse -->
+            <div class="col-md-2" id="div_head_search">
                 <form class="navbar-form navbar-left">
                     <div class="form-group" id="header_search_group">
                         <span class="glyphicon glyphicon-search form-control-feedback" id="glyphicon_search"></span>
-                        <input id="header_search" type="text" class="form-control" placeholder="Search">
+                        <input id="input_header_search" type="text" class="form-control" placeholder="Search">
                     </div>
                 </form>
-                <ul class="nav navbar-nav navbar-right">
+            </div>
+            <div class="col-md-2" id="div_header_user">
+                <ul class="nav navbar-nav">
                     <li><a href="user/login" th:text="'您好,'+${session.nameofuser}"></a></li>
                     <li><a href="/user/logout">登出</a></li>
                 </ul>
-            </div><!-- /.navbar-collapse -->
+            </div>
         </div><!-- /.container-fluid -->
     </nav>
 
 </div>
 <div class="container" id="main_content">
-    
+
 </div>
 
 

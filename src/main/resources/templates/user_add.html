@@ -13,10 +13,6 @@
     <div class="row">
         <div class="col-md-6">
             <div class="form-group">
-                <label for="UserID">UserID</label>
-                <input type="text" class="form-control" id="userId">
-            </div>
-            <div class="form-group">
                 <label for="LoginName">LoginName</label>
                 <input type="text" class="form-control" id="loginName">
             </div>
@@ -77,7 +73,6 @@
     $(document).ready(function () {
         var btn=$("button#submit");
         btn.click(function () {
-            var id=$("input#userId").val();
             var uname=$("input#userName").val();
             var lname=$("input#loginName").val();
             var aut=$("input#userAuthority").val();
@@ -87,7 +82,6 @@
             var lat=$("input#userLatitude").val();
             var pnum=$("input#phoneNumber").val();
             var user ={
-                user_id:id,
                 login_name:lname,
                 password:pwd,
                 authority:aut,
@@ -105,7 +99,7 @@
                 async:false,
                 data: JSON.stringify(user),
                 success: function (result) {
-                    alert("success");
+                    alert("添加成功");
                 }
             });
         });

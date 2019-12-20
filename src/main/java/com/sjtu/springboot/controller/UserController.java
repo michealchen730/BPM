@@ -105,7 +105,7 @@ public class UserController {
     }
 
 
-    @GetMapping("/manager_user_add")
+    @GetMapping("/user_add")
     public String toUserAdd(){
         return "user_add";
     }
@@ -247,6 +247,8 @@ public class UserController {
     public String toTemplatesTest(){
         return "templates_test";
     }
+
+
 
 
 }

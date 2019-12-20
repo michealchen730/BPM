@@ -1,51 +1,78 @@
+/*背景图片*/
 body{
     background: url("/img/bgi_1.gif");
+    font-family: 微软雅黑 ;
+    font-size: 15px;
 }
+
 .container-fluid{
     margin-left: 0;
     margin-right: 0;
     padding-left: 0;
     padding-right: 0;
 }
+
+
+/*导航栏设置*/
 .navbar-header{
-    margin-left: 420px;
+    margin-left: 10% !important;
 }
-.navbar-right{
-    margin-right: 440px;
+.navbar-nav{
+    margin-left: 25px !important;
 }
-#header_search{
-    margin-top: 1px;
-    height: 32px;
-    width: 180px;
+
+#input_header_search{
     border-top-right-radius: 16px;
     border-top-left-radius: 16px;
     border-bottom-right-radius:16px;
     border-bottom-left-radius:16px;
 }
-#header_search_group{
-    margin-left: 260px;
+
+#div_header_user{
+    float: right!important;
 }
 
-#main_content{
+.navbar-right{
+    margin-right: 10%;
+}
+
+/*正文*/
+#div_main_body{
     margin-top: 51px;
 }
-#glyphicon_search{
-    margin-top: 9px;
-    margin-right: 615px;
+#div_page_navigation{
+    margin-left: 78%;
 }
 
-#div_main{
-    background: white;
-    margin-top: 15px;
-}
-
-.table{
+/*表格设置*/
+#table_admin_store_manage{
+    margin-top: 35px;
     margin-bottom: 0;
+    background: white;
+    padding-left: 15px;
+    text-align: center;
+    font-size: 17px;
+}
+th{
+    text-align: center;
+    vertical-align: middle !important;
+}
+tr{
+    height: 60px;
 }
 
-#div_button_group{
-    margin-top: 15px;
+td{
+    vertical-align: middle !important;
 }
 
-#content_table{
+.td_address{
+    width: 200px;
+    word-wrap:break-word;
+    word-break:break-all
 }
+
+/*用户详情页面*/
+#user_detail{
+    margin-top: 51px;
+}
+

@@ -2,7 +2,7 @@
     margin-bottom: 0px;
 }
 #dituContent{
-    width: 1100px;
+    width: 100%;
     height: 880px;
     border: #ccc solid 1px;
 }
@@ -11,3 +11,87 @@
     margin-left: 579px;
     margin-right: -657px;
 }
+
+
+
+
+
+
+/*背景图片*/
+body{
+    background: url("/img/blue-snow.png");
+    font-family: 微软雅黑 ;
+    font-size: 15px;
+}
+
+.container-fluid{
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+
+/*导航栏设置*/
+.navbar-header{
+    margin-left: 10% !important;
+}
+.navbar-nav{
+    margin-left: 25px !important;
+}
+
+#input_header_search{
+    border-top-right-radius: 16px;
+    border-top-left-radius: 16px;
+    border-bottom-right-radius:16px;
+    border-bottom-left-radius:16px;
+}
+
+#div_header_user{
+    float: right!important;
+}
+
+.navbar-right{
+    margin-right: 10%;
+}
+
+/*正文*/
+#div_main_body{
+    margin-top: 51px;
+}
+#div_page_navigation{
+    margin-left: 78%;
+}
+
+/*表格设置*/
+#table_admin_store_manage{
+    margin-top: 35px;
+    margin-bottom: 0;
+    background: white;
+    padding-left: 15px;
+    text-align: center;
+    font-size: 17px;
+}
+th{
+    text-align: center;
+    vertical-align: middle !important;
+}
+tr{
+    height: 60px;
+}
+
+td{
+    vertical-align: middle !important;
+}
+
+.td_address{
+    width: 200px;
+    word-wrap:break-word;
+    word-break:break-all
+}
+
+/*用户详情页面*/
+#user_detail{
+    margin-top: 51px;
+}
+

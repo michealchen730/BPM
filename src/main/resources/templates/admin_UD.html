@@ -5,59 +5,41 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Bootstrap -->
     <link href="/webjars/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-    <link th:href="@{/css/user_detail.css}" rel="stylesheet" type="text/css"/>
-    <title>管理员</title>
+    <link th:href="@{/css/admin.css}" rel="stylesheet" type="text/css"/>
+    <title>用户详情</title>
 </head>
 <body>
 
-<div class="container-fluid">
-    <nav class="navbar navbar-default">
-        <div class="container-fluid">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="#">PPBZ</a>
+<nav class="navbar navbar-default navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">PPBZ 随手递平台</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li><a href="/user/admin">商家管理 <span class="sr-only">(current)</span></a></li>
+                <li class="active"><a href="#">用户管理</a></li>
+                <li><a href="/user/rc">注册审核</a></li>
+            </ul>
+            <div class="navbar-form navbar-left" id="div_head_search">
+                <div class="form-group  has-feedback">
+                    <label class="control-label sr-only" for="input_header_search">Input with error</label>
+                    <span class="glyphicon glyphicon-search form-control-feedback" id="glyphicon_search"></span>
+                    <input type="text" class="form-control" id="input_header_search" placeholder="Search">
+                </div>
             </div>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="user/login" th:text="'您好,'+${session.nameofuser}"></a></li>
+                <li><a href="/user/logout">登出</a></li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
 
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav">
-                    <li><a href="/user/admin">商家管理 <span class="sr-only">(current)</span></a></li>
-                    <li class="active"><a href="#">用户管理</a></li>
-                    <li><a href="rc">注册审核</a></li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="#">Action</a></li>
-                            <li><a href="#">Another action</a></li>
-                            <li><a href="#">Something else here</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="#">Separated link</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="#">One more separated link</a></li>
-                        </ul>
-                    </li>
-                </ul>
-                <form class="navbar-form navbar-left">
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Search">
-                    </div>
-                    <button type="submit" class="btn btn-default">Submit</button>
-                </form>
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a href="user/login" th:text="'您好,'+${session.nameofuser}"></a></li>
-                    <li><a href="/user/logout">登出</a></li>
 
-                </ul>
-            </div><!-- /.navbar-collapse -->
-        </div><!-- /.container-fluid -->
-    </nav>
-</div>
 <input type="hidden" id="id_del">
 <div class="container-fluid" id="user_detail">
     <div class="row">
@@ -130,29 +112,22 @@
         var user_2update;
 
         $.ajax({
-            url: "http://118.31.76.154:8080/Entity/U338ffb3af9551/BPM_H2H/User/?User.user_id="+queryVal,
+            url: "http://118.31.76.154:8080/Entity/U338ffb3af9551/BPM_H2H/User/"+queryVal,
             contentType: "application/json",
             type: "GET",
             async:false,
             //data: JSON.stringify(user),
             success: function (result) {
-                user_2update=result.User[0];
-                console.log("dididididid");
-                console.log(result.User[0].authority);
-                $("input#loginName").val(result.User[0].login_name);
-                $("input#userName").val(result.User[0].user_name);
-                $("input#password").val(result.User[0].password);
-                $("input#userAuthority").val(result.User[0].authority);
-                $("input#phonenumber").val(result.User[0].phonenumber);
-                $("input#userAddress").val(result.User[0].user_address);
-                $("input#id_del").val(result.User[0].id);
+                user_2update=result;
+                $("input#loginName").val(result.login_name);
+                $("input#userName").val(result.user_name);
+                $("input#password").val(result.password);
+                $("input#userAuthority").val(result.authority);
+                $("input#phonenumber").val(result.phonenumber);
+                $("input#userAddress").val(result.user_address);
+                $("input#id_del").val(result.id);
             }
         });
-        console.log(user_2update);
-        console.log(user_2update.phonenumber);
-        user_2update.phonenumber="35013501";
-        console.log(user_2update.phonenumber);
-
 
         var btn_del=$("button#btn_delete");
         btn_del.click(function () {
@@ -173,6 +148,7 @@
          * update的实现（实测可以用，但没有实现）
          */
         $("#updateUserDetail").click(function () {
+            user_2update.user_name=$("input#userName").val();
             $.ajax({
                 url: "http://118.31.76.154:8080/Entity/U338ffb3af9551/BPM_H2H/User/"+String($("input#id_del").val()),
                 contentType: "application/json",
@@ -180,7 +156,7 @@
                 async:false,
                 data: JSON.stringify(user_2update),
                 success: function (result) {
-                    alert("success");
+                    alert("信息修改成功");
                 }
             });
 
