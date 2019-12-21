@@ -2,3 +2,88 @@ img{
     height: 50px;
     width: 50px;
 }
+
+/*背景图片*/
+body{
+    background: url("/img/blue-snow.png");
+    font-family: 微软雅黑 ;
+    font-size: 15px;
+}
+
+.container-fluid{
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+
+/*导航栏设置*/
+.navbar-header{
+    margin-left: 10% !important;
+}
+.navbar-nav{
+    margin-left: 25px !important;
+}
+
+#input_header_search{
+    border-top-right-radius: 16px;
+    border-top-left-radius: 16px;
+    border-bottom-right-radius:16px;
+    border-bottom-left-radius:16px;
+}
+
+#div_header_user{
+    float: right!important;
+}
+
+.navbar-right{
+    margin-right: 10%;
+}
+
+/*正文*/
+#div_main_body{
+    margin-top: 51px;
+}
+
+#div_content{
+    margin-top: 25px;
+}
+
+/*输入框组的div设置*/
+.si_form-group{
+    margin-top: 25px;
+}
+
+#div_button_group{
+    margin-top: 50px;
+}
+
+
+/*店主界面的表格*/
+/*表格设置*/
+#table_admin_store_manage{
+    margin-top: 35px;
+    margin-bottom: 0;
+    background: white;
+    padding-left: 15px;
+    text-align: center;
+    font-size: 17px;
+}
+th{
+    text-align: center;
+    vertical-align: middle !important;
+}
+tr{
+    height: 40px;
+}
+
+td{
+    vertical-align: middle !important;
+}
+
+
+
+#div_commodityadd_content{
+    margin-top: 170px;
+}

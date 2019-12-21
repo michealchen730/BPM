@@ -13,10 +13,6 @@
     <div class="row">
         <div class="col-md-6">
             <div class="form-group">
-                <label for="StoreID">StoreID</label>
-                <input type="text" class="form-control" id="storeId">
-            </div>
-            <div class="form-group">
                 <label for="LoginName">LoginName</label>
                 <input type="text" class="form-control" id="loginName">
             </div>
@@ -40,7 +36,11 @@
                 <label for="StoreLatitude">storeLatitude</label>
                 <input type="text" class="form-control" id="storeLatitude">
             </div>
-            <button type="submit" class="btn btn-default" id="submit"><a href="/user/admin" style="color: black">添加</a></button>
+            <div class="form-group">
+                <label for="StoreDesc">storeDescription</label>
+                <textarea class="form-control" rows="3" id="storeDesc"></textarea>
+            </div>
+            <button type="submit" class="btn btn-default" id="submit"><a  style="color: black">添加</a></button>
 
         </div>
 
@@ -66,23 +66,22 @@
     $(document).ready(function () {
         var btn=$("button#submit");
         btn.click(function () {
-            var id=$("input#storeId").val();
             var lname=$("input#loginName").val();
             var sname=$("input#storeName").val();
             var pwd=$("input#storePassword").val();
             var add=$("input#storeAddress").val();
             var lon=$("input#storeLongitude").val();
             var lat=$("input#storeLatitude").val();
+            var desc=$("textarea#storeDesc").val();
             var store ={
-                store_id:id,
                 login_name:lname,
                 password:pwd,
                 store_name:sname,
                 store_address:add,
                 longitude:lon,
-                latitude:lat
+                latitude:lat,
+                description:desc
             };
-            console.log(store);
             $.ajax({
                 url: "http://118.31.76.154:8080/Entity/U338ffb3af9551/BPM_H2H/Store/",
                 contentType: "application/json",

@@ -87,40 +87,23 @@
         <div class="container-fluid">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="#">PPBZ</a>
+                <a class="navbar-brand" href="#">PPBZ 随手递平台</a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li><a href="/user/map">周边浏览 <span class="sr-only">(current)</span></a></li>
-                    <li><a href="si">我的订单</a></li>
-                    <li><a href="#"  class="active">商品浏览</a></li>
-                    <li><a href="si">我的接单</a></li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="#">Action</a></li>
-                            <li><a href="#">Another action</a></li>
-                            <li><a href="#">Something else here</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="#">Separated link</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="#">One more separated link</a></li>
-                        </ul>
-                    </li>
+                    <li><a href="/user/main">周边浏览</a></li>
+                    <li class="active"><a href="#">商品选购<span class="sr-only">(current)</span></a></li>
+                    <li><a href="/user/mo">我的订单</a></li>
+                    <li><a href="/user/mmo">我的接单</a></li>
                 </ul>
                 <form class="navbar-form navbar-left">
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Search">
+                    <div class="form-group  has-feedback">
+                        <label class="control-label sr-only" for="input_header_search">Input with error</label>
+                        <span class="glyphicon glyphicon-search form-control-feedback" id="glyphicon_search"></span>
+                        <input type="text" class="form-control" id="input_header_search" placeholder="Search">
                     </div>
-                    <button type="submit" class="btn btn-default">Submit</button>
                 </form>
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="user/login" th:text="'你好，'+${session.nameofuser}"></a></li>
@@ -133,21 +116,45 @@
     </nav>
 </div>
 
-<div>
-    <table class="table table-bordered">
-        <thead>
-        <tr>
-            <th>商品ID</th>
-            <th>商品名称</th>
-            <th>商品价格</th>
-            <th>商品描述</th>
-            <th>商品图片</th>
-            <th>操作</th>
-        </tr>
-        </thead>
-        <tbody id="tbody">
-        </tbody>
-    </table>
+<div class="container-fluid" id="div_all_commodity">
+
+</div>
+
+<div class="row">
+    <div class="col-md-6 col-md-offset-3">
+        <div class="row">
+            <div class="col-sm-6 col-md-4">
+                <div class="thumbnail">
+                    <img src="..." alt="...">
+                    <div class="caption">
+                        <h3>Thumbnail label</h3>
+                        <p>...</p>
+                        <p><a href="#" class="btn btn-primary" role="button">Button</a> <a href="#" class="btn btn-default" role="button">Button</a></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-4">
+                <div class="thumbnail">
+                    <img src="..." alt="...">
+                    <div class="caption">
+                        <h3>Thumbnail label</h3>
+                        <p>...</p>
+                        <p><a href="#" class="btn btn-primary" role="button">Button</a> <a href="#" class="btn btn-default" role="button">Button</a></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-4">
+                <div class="thumbnail">
+                    <img src="..." alt="...">
+                    <div class="caption">
+                        <h3>Thumbnail label</h3>
+                        <p>...</p>
+                        <p><a href="#" class="btn btn-primary" role="button">Button</a> <a href="#" class="btn btn-default" role="button">Button</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 
@@ -156,17 +163,24 @@
 <script src="/webjars/jquery/3.2.1/dist/jquery.min.js"></script>
 <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
 <script src="/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="/js/js_myshoppingcart.js"></script>
 
 <script type="text/javascript">
     $(document).ready(function () {
         var sid=$('p#p_storeid').html();
         console.log(sid);
         $.ajax({
-            url: "http://118.31.76.154:8080/Entity/U338ffb3af9551/BPM_H2H/Commodity/?owner_id="+sid,
+            url: "http://118.31.76.154:8080/Entity/U338ffb3af9551/BPM_H2H/Commodity/?Commodity.owner_id="+sid,
             contentType: "application/json",
             type: "GET",
             async:false,
             success: function (result) {
+                var totalnum=result.Commodity.length;
+                var i=0;
+                while(totalnum>=3) {
+                }
+
+
                 console.log(result);
                 for (var i=0;i<result.Commodity.length;i++) {
                     var trHTML = '<tr>'+
@@ -238,147 +252,12 @@
         });
 
 
+        //购物车和订单结算
         $("a#myShoppingCart").click(function () {
-            $("#shoppingcart_tbody").html("");
-            var userid=$("#p_userid").text();
-
-
-            $.ajax({
-                url: "http://118.31.76.154:8080/Entity/U338ffb3af9551/BPM_H2H/Shoppingcart/?owner_id="+userid,
-                contentType: "application/json",
-                type: "GET",
-                async:false,
-                success: function (result) {
-                    console.log(result);
-                    var totalprice=0;
-
-                    for(var i=0;i<result.Shoppingcart.length;i++){
-                        var tprice=parseInt(result.Shoppingcart[i].item_price)*parseInt(result.Shoppingcart[i].number);
-                        totalprice=totalprice+tprice;
-                        var trHTML = '<tr>'+
-                            '<td>'+
-                            result.Shoppingcart[i].commodity_id+
-                            '</td>'+
-                            '<td>'+
-                            result.Shoppingcart[i].commodity_name+
-                            '</td>'+
-                            '<td>'+
-                            result.Shoppingcart[i].item_price+'元'+
-                            '</td>'+
-                            '<td>'+
-                            result.Shoppingcart[i].number+
-                            '</td>'+
-                            '<td>'+
-                            String(tprice)+
-                            '</td>'+
-                            '<td>'+
-                            '<a class="table_a" href="#">操作</a>'+
-                            '</td>'+
-                            '</tr>';
-                        $("#shoppingcart_tbody").append(trHTML);
-                    }
-                    $("#p_totalprice").text(String(totalprice));
-                }
-            });
-
-            $("#shoppingCart").modal('show');
-
-        })
-
-
+            getShoppingCart();
+        });
         $("a#settleAccounts").click(function () {
-
-
-
-            var sender_id=$("p#p_userid").html();
-            var address="";
-            var phonenumber="";
-            var totalprice=$("p#p_totalprice").text();
-            var date=new Date();
-            var starttime=String(date);
-
-
-
-            $.ajax({
-                url: "http://118.31.76.154:8080/Entity/U338ffb3af9551/BPM_H2H/User/?User_id="+sender_id,
-                contentType: "application/json",
-                type: "GET",
-                async:false,
-                success: function (result) {
-                    address=result.User[0].user_address;
-                    phonenumber=result.User[0].phonenumber;
-                }
-            });
-            var order={
-                sender_id:sender_id,
-                address:address,
-                total_price:totalprice,
-                order_state:"0",
-                order_starttime:starttime
-            };
-            $.ajax({
-                url: "http://118.31.76.154:8080/Entity/U338ffb3af9551/BPM_H2H/Order/",
-                contentType: "application/json",
-                type: "POST",
-                async:false,
-                data: JSON.stringify(order),
-                success: function (result) {
-                    var orderdetail_id=result.id;
-                    console.log("orderdetailid:"+orderdetail_id);
-                    console.log("senderid:"+result.sender_id);
-                    $.ajax({
-                        url: "http://118.31.76.154:8080/Entity/U338ffb3af9551/BPM_H2H/Shoppingcart/?owner_id="+result.sender_id,
-                        contentType: "application/json",
-                        type: "GET",
-                        async:false,
-                        success: function (result) {
-
-                            for(var i=0;i<result.Shoppingcart.length;i++){
-                                var tprice=parseInt(result.Shoppingcart[i].item_price)*parseInt(result.Shoppingcart[i].number);
-                                var cid=result.Shoppingcart[i].commodity_id;
-                                var cname=result.Shoppingcart[i].commodity_name;
-                                var cnum=result.Shoppingcart[i].number;
-
-                                var orderdetail={
-                                    order_id:orderdetail_id,
-                                    commodity_id:cid,
-                                    commodity_price: tprice,
-                                    number:cnum,
-                                    commodity_name:cname
-                                };
-                                console.log(orderdetail)
-                                $.ajax({
-                                    url: "http://118.31.76.154:8080/Entity/U338ffb3af9551/BPM_H2H/Orderdetail/",
-                                    contentType: "application/json",
-                                    type: "POST",
-                                    async:false,
-                                    data: JSON.stringify(orderdetail),
-                                    success: function (result) {
-                                    }
-                                });
-                                $.ajax({
-                                    url: "http://118.31.76.154:8080/Entity/U338ffb3af9551/BPM_H2H/Shoppingcart/"+String(result.Shoppingcart[i].id),
-                                    //contentType: "application/json",
-                                    type: "DELETE",
-                                    async:false,
-                                    //data: JSON.stringify(user),
-                                    success: function (result) {
-                                    }
-                                });
-
-                            }
-
-
-
-                        }
-                    });
-                }
-            });
-            alert("订单已发布");
-            $("#p_totalprice").html("");
-            $("#shoppingCart").modal('hide');
-
-
+            settleAccounts();
         })
 
     });

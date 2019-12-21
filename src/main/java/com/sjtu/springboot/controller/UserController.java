@@ -249,6 +249,25 @@ public class UserController {
     }
 
 
+    //去用户主界面
+    @GetMapping("/main")
+    public String toUserMain(){
+        return "consumer_map";
+    }
+
+    //订单管理
+    @GetMapping("/om")
+    public String toOrderManager(){
+        return "admin_OM";
+    }
+
+    //订单详情管理
+    @GetMapping("/od")
+    public String toOrderDetail(){
+        return "admin_OD";
+    }
+
+
 
 
 }
