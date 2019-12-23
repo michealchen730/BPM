@@ -46,3 +46,21 @@ body{
 .navbar-right{
     margin-right: 10%;
 }
+
+.commodity_img{
+    width: 100%;
+}
+.h3_commodityname{
+    font-size: 18px;
+    margin-top: 5px;
+}
+
+.button_commodity{
+    font-size: 12px;
+    width: 48%;
+    padding-left: 4%;
+}
+
+.p_commoditydesc{
+    height: 80px;
+}

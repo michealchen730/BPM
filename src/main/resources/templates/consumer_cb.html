@@ -50,7 +50,7 @@
 </div><!-- /.modal -->
 
 <!-- sample modal content -->
-<div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<div id="add2Shoppingcart" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
 
@@ -117,47 +117,7 @@
 </div>
 
 <div class="container-fluid" id="div_all_commodity">
-
 </div>
-
-<div class="row">
-    <div class="col-md-6 col-md-offset-3">
-        <div class="row">
-            <div class="col-sm-6 col-md-4">
-                <div class="thumbnail">
-                    <img src="..." alt="...">
-                    <div class="caption">
-                        <h3>Thumbnail label</h3>
-                        <p>...</p>
-                        <p><a href="#" class="btn btn-primary" role="button">Button</a> <a href="#" class="btn btn-default" role="button">Button</a></p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-6 col-md-4">
-                <div class="thumbnail">
-                    <img src="..." alt="...">
-                    <div class="caption">
-                        <h3>Thumbnail label</h3>
-                        <p>...</p>
-                        <p><a href="#" class="btn btn-primary" role="button">Button</a> <a href="#" class="btn btn-default" role="button">Button</a></p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-6 col-md-4">
-                <div class="thumbnail">
-                    <img src="..." alt="...">
-                    <div class="caption">
-                        <h3>Thumbnail label</h3>
-                        <p>...</p>
-                        <p><a href="#" class="btn btn-primary" role="button">Button</a> <a href="#" class="btn btn-default" role="button">Button</a></p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-
 
 <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
 <script src="/webjars/jquery/3.2.1/dist/jquery.min.js"></script>
@@ -176,79 +136,109 @@
             async:false,
             success: function (result) {
                 var totalnum=result.Commodity.length;
-                var i=0;
+                var current=0;
                 while(totalnum>=3) {
+                    var divRowHTML='<div class="row" xmlns="http://www.w3.org/1999/html">\n' +
+                        '    <div class="col-md-6 col-md-offset-3">\n' +
+                        '        <div class="row">\n' +
+                        '            <div class="col-sm-6 col-md-4">\n' +
+                        '                <div class="thumbnail">\n' +
+                        '                    <img class="commodity_img" src="'+String("http://118.31.76.154:8080/file/U338ffb3af9551/BPM_H2H/Commodity/"+result.Commodity[current].id)+'\" alt="...">\n' +
+                        '                    <div class="caption">\n' +
+                        '                        <h3 class="h3_commodityname">'+result.Commodity[current].commodity_name+'</h3>\n' +
+                        '                        <p class="p_commoditydesc">'+result.Commodity[current].description+'</p>\n' +
+                        '                        <p><a href="#" class="btn btn-primary  button_commodity" role="button">立即购买</a> <a href="#" class="btn btn-default  button_commodity  twoShoppingCart" role="button"><span hidden>'+result.Commodity[current].id+'</span>加入购物车</a></p>\n' +
+                        '                    </div>\n' +
+                        '                </div>\n' +
+                        '            </div>\n' +
+                        '            <div class="col-sm-6 col-md-4">\n' +
+                        '                <div class="thumbnail">\n' +
+                        '                    <img class="commodity_img" src="'+String("http://118.31.76.154:8080/file/U338ffb3af9551/BPM_H2H/Commodity/"+result.Commodity[current+1].id)+'\" alt="...">\n' +
+                        '                    <div class="caption">\n' +
+                        '                        <h3 class="h3_commodityname">'+result.Commodity[current+1].commodity_name+'</h3>\n' +
+                        '                        <p class="p_commoditydesc">'+result.Commodity[current+1].description+'</p>\n' +
+                        '                        <p>'+result.Commodity[current+1].commodity_price+'</p>\n' +
+                        '                        <p><a href="#" class="btn btn-primary  button_commodity" role="button">立即购买</a> <a href="#" class="btn btn-default  button_commodity  twoShoppingCart" role="button"><span hidden>'+result.Commodity[current+1].id+'</span>加入购物车</a></p>\n' +
+                        '                    </div>\n' +
+                        '                </div>\n' +
+                        '            </div>\n' +
+                        '            <div class="col-sm-6 col-md-4">\n' +
+                        '                <div class="thumbnail">\n' +
+                        '                    <img class="commodity_img" src="'+String("http://118.31.76.154:8080/file/U338ffb3af9551/BPM_H2H/Commodity/"+result.Commodity[current+2].id)+'\" alt="...">\n' +
+                        '                    <div class="caption">\n' +
+                        '                        <h3 class="h3_commodityname">'+result.Commodity[current+2].commodity_name+'</h3>\n' +
+                        '                        <p class="p_commoditydesc">'+result.Commodity[current+2].description+'</p>\n' +
+                        '                        <p><a href="#" class="btn btn-primary  button_commodity " role="button">立即购买</a> <a href="#" class="btn btn-default  button_commodity twoShoppingCart" role="button"><span hidden>'+result.Commodity[current+2].id+'</span>加入购物车</a></p>\n' +
+                        '                    </div>\n' +
+                        '                </div>\n' +
+                        '            </div>\n' +
+                        '        </div>\n' +
+                        '    </div>\n' +
+                        '</div>';
+
+                    $("#div_all_commodity").append(divRowHTML);
+                    totalnum=totalnum-3;
+                    current=current+3;
                 }
 
-
-                console.log(result);
-                for (var i=0;i<result.Commodity.length;i++) {
-                    var trHTML = '<tr>'+
-                        '<td>'+
-                        result.Commodity[i].commodity_id+
-                        '</td>'+
-                        '<td>'+
-                        result.Commodity[i].commodity_name+
-                        '</td>'+
-                        '<td>'+
-                        result.Commodity[i].commodity_price+'元'+
-                        '</td>'+
-                        '<td>'+
-                        result.Commodity[i].description+
-                        '</td>'+
-                        '<td>'+
-                        '<img src="http://118.31.76.154:8080/file/U338ffb3af9551/BPM_H2H/Commodity/'+String(result.Commodity[i].id)+"\""+'> '+
-                        '</td>'+
-                        '<td>'+
-                        '<a class="table_a"><span id="span_cid" hidden>'+String(result.Commodity[i].commodity_id)+'</span><span id="span_cname" hidden>'+String(result.Commodity[i].commodity_name)+'</span><span id="span_cprice" hidden>'+String(result.Commodity[i].commodity_price)+'</span>加入购物车</a>'+
-                        '</td>'+
-                        '</tr>';
-                    $("#tbody").append(trHTML);
+                var divRowHTML_2='<div class="row"><div class="col-md-6 col-md-offset-3"><div class="row">';
+                for(var currenti=current;currenti<result.Commodity.length;currenti++){
+                    divRowHTML_2=divRowHTML_2+'<div class="col-sm-6 col-md-4"><div class="thumbnail div_commodity_display"><img class="commodity_img" src="'+String("http://118.31.76.154:8080/file/U338ffb3af9551/BPM_H2H/Commodity/"+result.Commodity[currenti].id)+'\"'+' alt="..."><div class="caption"><h3 class="h3_commodityname">'+result.Commodity[currenti].commodity_name+'</h3><p class="p_commoditydesc">'+result.Commodity[currenti].description+'</p><p><a href="#" class="btn btn-primary button_commodity" role="button">立即购买</a> <a href="#foo" class="btn btn-default button_commodity twoShoppingCart" role="button"><span hidden>'+result.Commodity[currenti].id+'</span>加入购物车</a></p></div></div></div>'
                 }
+                divRowHTML_2=divRowHTML_2+'</div></div></div>';
+                $("#div_all_commodity").append(divRowHTML_2);
             }
         });
 
-        $('a.table_a').click(function () {
-            $("#p_address").text($(this).children("span#span_cname").text());
-            $("#p_cid").text($(this).children("span#span_cid").text());
-            $("#p_price").text($(this).children("span#span_cprice").text());
-            $("#myModal").modal('show');
-
-            //alert($(this).children("span#span_cid").text()+$(this).children("span#span_cname").text());
-
-        })
-
-
-        $("#2ShoppingCart").click(function () {
-
-
+        //加入购物车操作
+        $(".twoShoppingCart").click(function () {
+            $('#add2Shoppingcart').modal('show');
 
             var userid=$("#p_userid").text();
-            var commodity_id=$("#p_cid").text();
-            var commodity_name=$("#p_address").text();
-            var commodity_price=$("#p_price").text();
-            var number=$("#input_commodity_number").val();
-
+            var commodity_id=$(this).children("span").text();
             var shoppingcart ={
                 owner_id:userid,
                 commodity_id:commodity_id,
-                commodity_name:commodity_name,
-                number:number,
-                item_price:commodity_price
+                commodity_name:"未知",
+                number:"1",
+                item_price:"0"
             };
             $.ajax({
-                url: "http://118.31.76.154:8080/Entity/U338ffb3af9551/BPM_H2H/Shoppingcart/",
+                url: "http://118.31.76.154:8080/Entity/U338ffb3af9551/BPM_H2H/Commodity/"+commodity_id,
                 contentType: "application/json",
-                type: "POST",
+                type: "GET",
                 async:false,
-                data: JSON.stringify(shoppingcart),
                 success: function (result) {
-                    alert("添加成功");
-                    $("#myModel").modal('hide');
+                    shoppingcart.commodity_name=result.commodity_name;
+                    shoppingcart.item_price=result.commodity_price;
                 }
             });
-            $("#myModel").modal('hide');
+            console.log(shoppingcart);
 
+
+        //     var commodity_name=$("#p_address").text();
+        //     var commodity_price=$("#p_price").text();
+        //     var number=$("#input_commodity_number").val();
+        //
+        //     var shoppingcart ={
+        //         owner_id:userid,
+        //         commodity_id:commodity_id,
+        //         commodity_name:commodity_name,
+        //         number:number,
+        //         item_price:commodity_price
+        //     };
+        //     $.ajax({
+        //         url: "http://118.31.76.154:8080/Entity/U338ffb3af9551/BPM_H2H/Shoppingcart/",
+        //         contentType: "application/json",
+        //         type: "POST",
+        //         async:false,
+        //         data: JSON.stringify(shoppingcart),
+        //         success: function (result) {
+        //             alert("添加成功");
+        //             $("#myModel").modal('hide');
+        //         }
+        //     });
+        //$("#myModel").modal('hide');
         });
 
 
@@ -258,9 +248,24 @@
         });
         $("a#settleAccounts").click(function () {
             settleAccounts();
-        })
+        });
+        $("#shoppingCart").delegate("a.shoppingcart_commodity_delete","click",function(){
+            var commodity_id_del=$(this).children("span").text();
+            deleteCommodityFromShoppingcart(commodity_id_del);
+        });
+
+
+        //调整商品展示的图片宽高一致
+        $(".commodity_img").height($(".commodity_img").width());
+
+
+
 
     });
+
+
+
+
 
 
 </script>

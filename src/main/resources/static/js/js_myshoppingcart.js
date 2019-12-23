@@ -18,7 +18,7 @@ function getShoppingCart() {
                     '<td>'+ result.Shoppingcart[i].item_price+'元'+ '</td>'+
                     '<td>'+ result.Shoppingcart[i].number+ '</td>'+
                     '<td>'+ String(tprice)+ '</td>'+
-                    '<td>'+ '<a class="table_a" href="#">操作</a>'+ '</td>'+
+                    '<td>'+ '<a class="shoppingcart_commodity_delete" href="#"><span hidden>'+result.Shoppingcart[i].id+'</span>删除</a>'+ '</td>'+
                     '</tr>';
                 $("#shoppingcart_tbody").append(trHTML);
             }
@@ -28,6 +28,7 @@ function getShoppingCart() {
     $("#shoppingCart").modal('show');
 }
 
+//购物车的结算
 function settleAccounts(){
     var sender_id=$("p#p_userid").html();
     var address="";
@@ -116,4 +117,16 @@ function settleAccounts(){
     alert("订单已发布");
     $("#p_totalprice").html("");
     $("#shoppingCart").modal('hide');
+}
+
+function deleteCommodityFromShoppingcart(commodity_id_del) {
+    alert($(this).children("span").text());
+    $.ajax({
+        url: "http://118.31.76.154:8080/Entity/U338ffb3af9551/BPM_H2H/Shoppingcart/"+commodity_id_del,
+        type: "DELETE",
+        async:false,
+        success: function (result) {
+            getShoppingCart();
+        }
+    });
 }

@@ -142,6 +142,10 @@
         $("a#settleAccounts").click(function () {
             settleAccounts();
         })
+        $("#shoppingCart").delegate("a.shoppingcart_commodity_delete","click",function(){
+            var commodity_id_del=$(this).children("span").text();
+            deleteCommodityFromShoppingcart(commodity_id_del);
+        });
     })
 
 </script>
