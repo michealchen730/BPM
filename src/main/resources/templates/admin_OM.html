@@ -131,19 +131,26 @@
             success: function (result) {
                 console.log(result);
 
+
                 for (var i=0;i<result.Order.length;i++) {
+                    var sendid="#";
+                    if(String(result.Order[i].sender_id)==="undefined"){
+                        sendid="无";
+                    }else{
+                        sendid=result.Order[i].sender_id;
+                    }
                     var trHTML = '<tr>'+
                         '<td>'+
                         result.Order[i].id+
                         '</td>'+
                         '<td>'+
-                        result.Order[i].sender_id+
+                        sendid+
                         '</td>'+
                         '<td>'+
-                        result.Order[i].recipient_id+
+                        result.Order[i].owner_id+
                         '</td>'+
                         '<td>'+
-                        result.Order[i].address+
+                        result.Order[i].owner_address+
                         '</td>'+
                         '<td>'+
                         result.Order[i].total_price+
@@ -155,7 +162,7 @@
                         result.Order[i].order_starttime+
                         '</td>'+
                         '<td>'+
-                        result.Order[i].order_endtime+
+                        "订单进行中"+
                         '</td>'+
                         '<td>'+
                         '<a class="table_a" href="SD/?id=' + String(result.Order[i].id) + "\"" + ">" + '操作</a>'+

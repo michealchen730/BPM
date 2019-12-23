@@ -68,7 +68,6 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <li><a href="/user/main">周边浏览</a></li>
-                    <li><a href="#">商品选购</a></li>
                     <li class="active"><a href="/user/mo">我的订单<span class="sr-only">(current)</span></a></li>
                     <li><a href="/user/mmo">我的接单</a></li>
                 </ul>
@@ -90,25 +89,27 @@
     </nav>
 </div>
 
-<div class="container" id="div_main_body">
-    <div class="row" id="div_main">
-        <table class="table table-condensed" id="table_admin_store_manage">
-            <thead>
-            <tr>
-                <th>订单ID</th>
-                <th>商家名称</th>
-                <th>商品价格</th>
-                <th>收货人姓名</th>
-                <th>收货地址</th>
-                <th>订单生成时间</th>
-                <th>商品图片</th>
-                <th>操作</th>
-            </tr>
-            </thead>
-            <tbody id="tbody">
-            </tbody>
-        </table>
-    </div>
+<div class="row">
+        <div class="col-md-10 col-md-offset-1">
+            <table class="table table-condensed" id="table_admin_store_manage">
+                <thead>
+                <tr>
+                    <th>订单ID</th>
+                    <th>商家名称</th>
+                    <th>商品总价</th>
+                    <th>收货人姓名</th>
+                    <th>联系方式</th>
+                    <th>收货地址</th>
+                    <th>订单状态</th>
+                    <th>订单生成时间</th>
+                    <th>订单完成时间</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody id="tbody">
+                </tbody>
+            </table>
+        </div>
 </div>
 
 
@@ -117,6 +118,8 @@
 <script src="/webjars/jquery/3.2.1/dist/jquery.min.js"></script>
 <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
 <script src="/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="/js/js_mymap.js"></script>
+<script src="/js/js_myshoppingcart.js"></script>
 
 <script type="text/javascript">
     $(document).ready(function () {
@@ -128,7 +131,25 @@
             type: "GET",
             async:false,
             success: function (result) {
+
                 for (var i=0;i<result.Order.length;i++) {
+                    var endtime="订单进行中";
+                    console.log(result.Order[i].order_endtime);
+                    if(String(result.Order[i].order_endtime)==="undefined"){
+                        console.log("true");
+                    }else{
+                        endtime=result.Order[i].order_endtime;
+                    }
+                    var state="#";
+                    if(result.Order[i].order_state==="0"){
+                        state="已发布";
+                    }else if(result.Order[i].order_state==="1"){
+                        state="已接单";
+                    }else if(result.Order[i].order_state==="2"){
+                        state="已完成";
+                    }else{
+                        state="已取消";
+                    }
                     var trHTML = '<tr>'+
                         '<td>'+
                         result.Order[i].id+
@@ -143,13 +164,18 @@
                         result.Order[i].owner_name+
                         '</td>'+
                         '<td>'+
+                        result.Order[i].owner_phonenumber+
+                        '</td>'+
+                        '<td>'+
                         result.Order[i].owner_address+
                         '</td>'+
+                        '<td>'+ state+ '</td>'+
                         '<td>'+
                         result.Order[i].order_starttime+
                         '</td>'+
+                        '<td>'+ endtime+ '</td>'+
                         '<td>'+
-                        result.Order[i].owner_address+
+                        '<a href="#">操作</a>'+
                         '</td>'+
                         '</tr>';
                     $("#tbody").append(trHTML);
@@ -160,146 +186,10 @@
 
 
         $("a#myShoppingCart").click(function () {
-            $("#shoppingcart_tbody").html("");
-            var userid=$("#p_userid").text();
-
-
-            $.ajax({
-                url: "http://118.31.76.154:8080/Entity/U338ffb3af9551/BPM_H2H/Shoppingcart/?owner_id="+userid,
-                contentType: "application/json",
-                type: "GET",
-                async:false,
-                success: function (result) {
-                    console.log(result);
-                    var totalprice=0;
-
-                    for(var i=0;i<result.Shoppingcart.length;i++){
-                        var tprice=parseInt(result.Shoppingcart[i].item_price)*parseInt(result.Shoppingcart[i].number);
-                        totalprice=totalprice+tprice;
-                        var trHTML = '<tr>'+
-                            '<td>'+
-                            result.Shoppingcart[i].commodity_id+
-                            '</td>'+
-                            '<td>'+
-                            result.Shoppingcart[i].commodity_name+
-                            '</td>'+
-                            '<td>'+
-                            result.Shoppingcart[i].item_price+'元'+
-                            '</td>'+
-                            '<td>'+
-                            result.Shoppingcart[i].number+
-                            '</td>'+
-                            '<td>'+
-                            String(tprice)+
-                            '</td>'+
-                            '<td>'+
-                            '<a class="table_a" href="#">操作</a>'+
-                            '</td>'+
-                            '</tr>';
-                        $("#shoppingcart_tbody").append(trHTML);
-                    }
-                    $("#p_totalprice").text(String(totalprice));
-                }
-            });
-
-            $("#shoppingCart").modal('show');
-
-        })
-
-
+            getShoppingCart();
+        });
         $("a#settleAccounts").click(function () {
-
-
-
-            var sender_id=$("p#p_userid").html();
-            var address="";
-            var phonenumber="";
-            var totalprice=$("p#p_totalprice").text();
-            var date=new Date();
-            var starttime=String(date);
-
-
-
-            $.ajax({
-                url: "http://118.31.76.154:8080/Entity/U338ffb3af9551/BPM_H2H/User/?User_id="+sender_id,
-                contentType: "application/json",
-                type: "GET",
-                async:false,
-                success: function (result) {
-                    address=result.User[0].user_address;
-                    phonenumber=result.User[0].phonenumber;
-                }
-            });
-            var order={
-                sender_id:sender_id,
-                address:address,
-                total_price:totalprice,
-                order_state:"0",
-                order_starttime:starttime
-            };
-            $.ajax({
-                url: "http://118.31.76.154:8080/Entity/U338ffb3af9551/BPM_H2H/Order/",
-                contentType: "application/json",
-                type: "POST",
-                async:false,
-                data: JSON.stringify(order),
-                success: function (result) {
-                    var orderdetail_id=result.id;
-                    console.log("orderdetailid:"+orderdetail_id);
-                    console.log("senderid:"+result.sender_id);
-                    $.ajax({
-                        url: "http://118.31.76.154:8080/Entity/U338ffb3af9551/BPM_H2H/Shoppingcart/?owner_id="+result.sender_id,
-                        contentType: "application/json",
-                        type: "GET",
-                        async:false,
-                        success: function (result) {
-
-                            for(var i=0;i<result.Shoppingcart.length;i++){
-                                var tprice=parseInt(result.Shoppingcart[i].item_price)*parseInt(result.Shoppingcart[i].number);
-                                var cid=result.Shoppingcart[i].commodity_id;
-                                var cname=result.Shoppingcart[i].commodity_name;
-                                var cnum=result.Shoppingcart[i].number;
-
-                                var orderdetail={
-                                    order_id:orderdetail_id,
-                                    commodity_id:cid,
-                                    commodity_price: tprice,
-                                    number:cnum,
-                                    commodity_name:cname
-                                };
-                                console.log(orderdetail)
-                                $.ajax({
-                                    url: "http://118.31.76.154:8080/Entity/U338ffb3af9551/BPM_H2H/Orderdetail/",
-                                    contentType: "application/json",
-                                    type: "POST",
-                                    async:false,
-                                    data: JSON.stringify(orderdetail),
-                                    success: function (result) {
-                                    }
-                                });
-                                $.ajax({
-                                    url: "http://118.31.76.154:8080/Entity/U338ffb3af9551/BPM_H2H/Shoppingcart/"+String(result.Shoppingcart[i].id),
-                                    //contentType: "application/json",
-                                    type: "DELETE",
-                                    async:false,
-                                    //data: JSON.stringify(user),
-                                    success: function (result) {
-                                    }
-                                });
-
-                            }
-
-
-
-                        }
-                    });
-                }
-            });
-            alert("订单已发布");
-            $("#p_totalprice").html("");
-            $("#shoppingCart").modal('hide');
-
-
+            settleAccounts();
         })
 
     });

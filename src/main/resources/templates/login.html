@@ -56,7 +56,6 @@
               }else{
                 console.log(result.User[0]);
                 if (result.User[0].password===password){
-                  alert("密码正确");
                   if (result.User[0].authority==="1"){
                     alert("您是管理员");
                     $(location).attr('href', '/user/adminn?username='+String(result.User[0].login_name)+'&userid='+String(result.User[0].id));
