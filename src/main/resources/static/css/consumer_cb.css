@@ -7,6 +7,9 @@ img{
     margin-left: 579px;
     margin-right: -657px;
 }
+#p_totalprice{
+    margin-left: 85%;
+}
 
 
 /*背景图片*/
@@ -63,4 +66,10 @@ body{
 
 .p_commoditydesc{
     height: 80px;
+}
+
+.h4_commodity_price{
+    margin-top: 0;
+    margin-left: 45%;
+    margin-bottom: 25px;
 }

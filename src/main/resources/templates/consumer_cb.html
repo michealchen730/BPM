@@ -14,9 +14,9 @@
 
 <!-- 购物车功能的尝试 -->
 <div id="shoppingCart" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <p hidden id="p_shoppingcart_storeid"></p>
     <div class="modal-dialog" role="document">
         <div class="modal-content" id="shoppingcart_pos">
-
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title">我的购物车</h4>
@@ -44,7 +44,6 @@
                 <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
                 <a class="btn btn-primary" href="#"  role="button" id="settleAccounts">结算</a>
             </div>
-
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
@@ -70,7 +69,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                <a class="btn btn-primary" href="#" id="2ShoppingCart" role="button" data-dismiss="modal">加入购物车</a>
+                <a class="btn btn-primary" href="#" id="a_add2ShoppingCart" role="button" data-dismiss="modal"><span id="span_add2Shoppingcart" hidden></span>加入购物车</a>
             </div>
 
         </div><!-- /.modal-content -->
@@ -147,6 +146,7 @@
                         '                    <div class="caption">\n' +
                         '                        <h3 class="h3_commodityname">'+result.Commodity[current].commodity_name+'</h3>\n' +
                         '                        <p class="p_commoditydesc">'+result.Commodity[current].description+'</p>\n' +
+                        '                         <h4 class="h4_commodity_price">商品价格:'+result.Commodity[current].commodity_price+' 元</h4>\n' +
                         '                        <p><a href="#" class="btn btn-primary  button_commodity" role="button">立即购买</a> <a href="#" class="btn btn-default  button_commodity  twoShoppingCart" role="button"><span hidden>'+result.Commodity[current].id+'</span>加入购物车</a></p>\n' +
                         '                    </div>\n' +
                         '                </div>\n' +
@@ -157,7 +157,7 @@
                         '                    <div class="caption">\n' +
                         '                        <h3 class="h3_commodityname">'+result.Commodity[current+1].commodity_name+'</h3>\n' +
                         '                        <p class="p_commoditydesc">'+result.Commodity[current+1].description+'</p>\n' +
-                        '                        <p>'+result.Commodity[current+1].commodity_price+'</p>\n' +
+                        '                        <h4 class="h4_commodity_price">商品价格:'+result.Commodity[current+1].commodity_price+' 元</h4>\n' +
                         '                        <p><a href="#" class="btn btn-primary  button_commodity" role="button">立即购买</a> <a href="#" class="btn btn-default  button_commodity  twoShoppingCart" role="button"><span hidden>'+result.Commodity[current+1].id+'</span>加入购物车</a></p>\n' +
                         '                    </div>\n' +
                         '                </div>\n' +
@@ -168,6 +168,7 @@
                         '                    <div class="caption">\n' +
                         '                        <h3 class="h3_commodityname">'+result.Commodity[current+2].commodity_name+'</h3>\n' +
                         '                        <p class="p_commoditydesc">'+result.Commodity[current+2].description+'</p>\n' +
+                        '                         <h4 class="h4_commodity_price">商品价格:'+result.Commodity[current+2].commodity_price+' 元</h4>\n' +
                         '                        <p><a href="#" class="btn btn-primary  button_commodity " role="button">立即购买</a> <a href="#" class="btn btn-default  button_commodity twoShoppingCart" role="button"><span hidden>'+result.Commodity[current+2].id+'</span>加入购物车</a></p>\n' +
                         '                    </div>\n' +
                         '                </div>\n' +
@@ -183,24 +184,31 @@
 
                 var divRowHTML_2='<div class="row"><div class="col-md-6 col-md-offset-3"><div class="row">';
                 for(var currenti=current;currenti<result.Commodity.length;currenti++){
-                    divRowHTML_2=divRowHTML_2+'<div class="col-sm-6 col-md-4"><div class="thumbnail div_commodity_display"><img class="commodity_img" src="'+String("http://118.31.76.154:8080/file/U338ffb3af9551/BPM_H2H/Commodity/"+result.Commodity[currenti].id)+'\"'+' alt="..."><div class="caption"><h3 class="h3_commodityname">'+result.Commodity[currenti].commodity_name+'</h3><p class="p_commoditydesc">'+result.Commodity[currenti].description+'</p><p><a href="#" class="btn btn-primary button_commodity" role="button">立即购买</a> <a href="#foo" class="btn btn-default button_commodity twoShoppingCart" role="button"><span hidden>'+result.Commodity[currenti].id+'</span>加入购物车</a></p></div></div></div>'
+                    divRowHTML_2=divRowHTML_2+'<div class="col-sm-6 col-md-4"><div class="thumbnail div_commodity_display"><img class="commodity_img" src="'+String("http://118.31.76.154:8080/file/U338ffb3af9551/BPM_H2H/Commodity/"+result.Commodity[currenti].id)+'\"'+' alt="..."><div class="caption"><h3 class="h3_commodityname">'+result.Commodity[currenti].commodity_name+'</h3><p class="p_commoditydesc">'+result.Commodity[currenti].description+'</p><h4 class="h4_commodity_price">商品价格:'+result.Commodity[currenti].commodity_price+'元</h4><p><a href="#" class="btn btn-primary button_commodity" role="button">立即购买</a> <a href="#foo" class="btn btn-default button_commodity twoShoppingCart" role="button"><span hidden>'+result.Commodity[currenti].id+'</span>加入购物车</a></p></div></div></div>'
                 }
                 divRowHTML_2=divRowHTML_2+'</div></div></div>';
                 $("#div_all_commodity").append(divRowHTML_2);
             }
         });
 
-        //加入购物车操作
+        //唤起购物车模态框
         $(".twoShoppingCart").click(function () {
-            $('#add2Shoppingcart').modal('show');
-
-            var userid=$("#p_userid").text();
             var commodity_id=$(this).children("span").text();
+            $("span#span_add2Shoppingcart").text(commodity_id);
+            $('#add2Shoppingcart').modal('show');
+        });
+
+
+        //添加到购物车
+        $("#a_add2ShoppingCart").click(function () {
+            var commodity_id=$(this).children("span").text();
+            var userid=$("#p_userid").text();
+            var number=$("#input_commodity_number").val();
             var shoppingcart ={
                 owner_id:userid,
                 commodity_id:commodity_id,
                 commodity_name:"未知",
-                number:"1",
+                number:number,
                 item_price:"0"
             };
             $.ajax({
@@ -213,33 +221,24 @@
                     shoppingcart.item_price=result.commodity_price;
                 }
             });
-            console.log(shoppingcart);
+            $.ajax({
+                url: "http://118.31.76.154:8080/Entity/U338ffb3af9551/BPM_H2H/Shoppingcart/",
+                contentType: "application/json",
+                type: "POST",
+                async:false,
+                data: JSON.stringify(shoppingcart),
+                success: function (result) {
+                    alert("添加成功");
+                    $("#add2Shoppingcart").modal('hide');
+                }
+            });
 
-
-        //     var commodity_name=$("#p_address").text();
-        //     var commodity_price=$("#p_price").text();
-        //     var number=$("#input_commodity_number").val();
-        //
-        //     var shoppingcart ={
-        //         owner_id:userid,
-        //         commodity_id:commodity_id,
-        //         commodity_name:commodity_name,
-        //         number:number,
-        //         item_price:commodity_price
-        //     };
-        //     $.ajax({
-        //         url: "http://118.31.76.154:8080/Entity/U338ffb3af9551/BPM_H2H/Shoppingcart/",
-        //         contentType: "application/json",
-        //         type: "POST",
-        //         async:false,
-        //         data: JSON.stringify(shoppingcart),
-        //         success: function (result) {
-        //             alert("添加成功");
-        //             $("#myModel").modal('hide');
-        //         }
-        //     });
-        //$("#myModel").modal('hide');
         });
+
+
+
+
+
 
 
         //购物车和订单结算

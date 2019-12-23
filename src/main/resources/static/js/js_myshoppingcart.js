@@ -8,6 +8,11 @@ function getShoppingCart() {
         type: "GET",
         async:false,
         success: function (result) {
+            if(result.Shoppingcart.length!=0){
+                var firstcommodityid=result.Shoppingcart[0].commodity_id;
+                $("#p_shoppingcart_storeid").text(firstcommodityid);
+            }
+
             var totalprice=0;
             for(var i=0;i<result.Shoppingcart.length;i++){
                 var tprice=parseInt(result.Shoppingcart[i].item_price)*parseInt(result.Shoppingcart[i].number);
@@ -23,6 +28,7 @@ function getShoppingCart() {
                 $("#shoppingcart_tbody").append(trHTML);
             }
             $("#p_totalprice").text(String(totalprice));
+            $("#p_totalprice").append(" 元");
         }
     });
     $("#shoppingCart").modal('show');
@@ -30,32 +36,66 @@ function getShoppingCart() {
 
 //购物车的结算
 function settleAccounts(){
-    var sender_id=$("p#p_userid").html();
-    var address="";
-    var phonenumber="";
-    var totalprice=$("p#p_totalprice").text();
-    var date=new Date();
-    var starttime=String(date);
-
-
-
+    var tempcommodity_id=$("#p_shoppingcart_storeid").text();
+    var tempstoreid="#";
     $.ajax({
-        url: "http://118.31.76.154:8080/Entity/U338ffb3af9551/BPM_H2H/User/?User_id="+sender_id,
+        url: "http://118.31.76.154:8080/Entity/U338ffb3af9551/BPM_H2H/Commodity/"+tempcommodity_id,
         contentType: "application/json",
         type: "GET",
         async:false,
         success: function (result) {
-            address=result.User[0].user_address;
-            phonenumber=result.User[0].phonenumber;
+            tempstoreid=result.owner_id;
+        }
+    });
+    var owner_id=$("p#p_userid").html();
+    var owner_name="#";
+    var phonenumber="#";
+    var address="#";
+    var totalprice=$("p#p_totalprice").text();
+    totalprice=totalprice.slice(0,-2);
+    var date=new Date();
+    var starttime=String(date);
+    var storename="#";
+    var storeaddress="#";
+    var storelon="#";
+    var storelat="#";
+    $.ajax({
+        url: "http://118.31.76.154:8080/Entity/U338ffb3af9551/BPM_H2H/Store/"+tempstoreid,
+        contentType: "application/json",
+        type: "GET",
+        async:false,
+        success: function (result) {
+            storename=result.store_name;
+            storeaddress=result.store_address;
+            storelon=result.longitude;
+            storelat=result.latitude;
+        }
+    });
+    $.ajax({
+        url: "http://118.31.76.154:8080/Entity/U338ffb3af9551/BPM_H2H/User/"+owner_id,
+        contentType: "application/json",
+        type: "GET",
+        async:false,
+        success: function (result) {
+            owner_name=result.user_name;
+            phonenumber=result.phonenumber;
+            address=result.user_address;
         }
     });
     var order={
-        sender_id:sender_id,
-        address:address,
+        owner_id:owner_id,
+        owner_name:owner_name,
+        owner_phonenumber:phonenumber,
+        owner_address:address,
         total_price:totalprice,
         order_state:"0",
-        order_starttime:starttime
+        order_starttime:starttime,
+        store_address:storeaddress,
+        store_add_lon:storelon,
+        store_add_lat:storelat,
+        store_name:storename,
     };
+    console.log(order);
     $.ajax({
         url: "http://118.31.76.154:8080/Entity/U338ffb3af9551/BPM_H2H/Order/",
         contentType: "application/json",
@@ -64,15 +104,13 @@ function settleAccounts(){
         data: JSON.stringify(order),
         success: function (result) {
             var orderdetail_id=result.id;
-            console.log("orderdetailid:"+orderdetail_id);
-            console.log("senderid:"+result.sender_id);
+            var orderdetail_ownerid=result.owner_id;
             $.ajax({
-                url: "http://118.31.76.154:8080/Entity/U338ffb3af9551/BPM_H2H/Shoppingcart/?owner_id="+result.sender_id,
+                url: "http://118.31.76.154:8080/Entity/U338ffb3af9551/BPM_H2H/Shoppingcart/?owner_id="+orderdetail_ownerid,
                 contentType: "application/json",
                 type: "GET",
                 async:false,
                 success: function (result) {
-
                     for(var i=0;i<result.Shoppingcart.length;i++){
                         var tprice=parseInt(result.Shoppingcart[i].item_price)*parseInt(result.Shoppingcart[i].number);
                         var cid=result.Shoppingcart[i].commodity_id;
@@ -105,11 +143,7 @@ function settleAccounts(){
                             success: function (result) {
                             }
                         });
-
                     }
-
-
-
                 }
             });
         }

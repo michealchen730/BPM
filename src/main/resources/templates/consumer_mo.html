@@ -14,6 +14,7 @@
 
 <!-- 购物车功能的尝试 -->
 <div id="shoppingCart" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <p hidden id="p_shoppingcart_storeid"></p>
     <div class="modal-dialog" role="document">
         <div class="modal-content" id="shoppingcart_pos">
 
@@ -60,39 +61,23 @@
         <div class="container-fluid">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="#">PPBZ</a>
+                <a class="navbar-brand" href="#">PPBZ 随手递平台</a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li><a href="/user/map">周边浏览</a></li>
-                    <li  class="active"><a href="si">我的订单</a></li>
-                    <li><a href="si">我的接单</a></li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="#">Action</a></li>
-                            <li><a href="#">Another action</a></li>
-                            <li><a href="#">Something else here</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="#">Separated link</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="#">One more separated link</a></li>
-                        </ul>
-                    </li>
+                    <li><a href="/user/main">周边浏览</a></li>
+                    <li><a href="#">商品选购</a></li>
+                    <li class="active"><a href="/user/mo">我的订单<span class="sr-only">(current)</span></a></li>
+                    <li><a href="/user/mmo">我的接单</a></li>
                 </ul>
                 <form class="navbar-form navbar-left">
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Search">
+                    <div class="form-group  has-feedback">
+                        <label class="control-label sr-only" for="input_header_search">Input with error</label>
+                        <span class="glyphicon glyphicon-search form-control-feedback" id="glyphicon_search"></span>
+                        <input type="text" class="form-control" id="input_header_search" placeholder="Search">
                     </div>
-                    <button type="submit" class="btn btn-default">Submit</button>
                 </form>
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="user/login" th:text="'你好，'+${session.nameofuser}"></a></li>
@@ -105,21 +90,25 @@
     </nav>
 </div>
 
-<div>
-    <table class="table table-bordered">
-        <thead>
-        <tr>
-            <th>订单ID</th>
-            <th>商品名称</th>
-            <th>商品价格</th>
-            <th>商品描述</th>
-            <th>商品图片</th>
-            <th>操作</th>
-        </tr>
-        </thead>
-        <tbody id="tbody">
-        </tbody>
-    </table>
+<div class="container" id="div_main_body">
+    <div class="row" id="div_main">
+        <table class="table table-condensed" id="table_admin_store_manage">
+            <thead>
+            <tr>
+                <th>订单ID</th>
+                <th>商家名称</th>
+                <th>商品价格</th>
+                <th>收货人姓名</th>
+                <th>收货地址</th>
+                <th>订单生成时间</th>
+                <th>商品图片</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody id="tbody">
+            </tbody>
+        </table>
+    </div>
 </div>
 
 
@@ -131,34 +120,36 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
+        var uid=$("#p_userid").text();
         var sid=$('p#p_storeid').html();
-        console.log(sid);
         $.ajax({
-            url: "http://118.31.76.154:8080/Entity/U338ffb3af9551/BPM_H2H/Commodity/?owner_id="+sid,
+            url: "http://118.31.76.154:8080/Entity/U338ffb3af9551/BPM_H2H/Order/?Order.owner_id="+uid,
             contentType: "application/json",
             type: "GET",
             async:false,
             success: function (result) {
-                console.log(result);
-                for (var i=0;i<result.Commodity.length;i++) {
+                for (var i=0;i<result.Order.length;i++) {
                     var trHTML = '<tr>'+
                         '<td>'+
-                        result.Commodity[i].commodity_id+
+                        result.Order[i].id+
                         '</td>'+
                         '<td>'+
-                        result.Commodity[i].commodity_name+
+                        result.Order[i].store_name+
                         '</td>'+
                         '<td>'+
-                        result.Commodity[i].commodity_price+'元'+
+                        result.Order[i].total_price+"元"+
                         '</td>'+
                         '<td>'+
-                        result.Commodity[i].description+
+                        result.Order[i].owner_name+
                         '</td>'+
                         '<td>'+
-                        '<img src="http://118.31.76.154:8080/file/U338ffb3af9551/BPM_H2H/Commodity/'+String(result.Commodity[i].id)+"\""+'> '+
+                        result.Order[i].owner_address+
                         '</td>'+
                         '<td>'+
-                        '<a class="table_a"><span id="span_cid" hidden>'+String(result.Commodity[i].commodity_id)+'</span><span id="span_cname" hidden>'+String(result.Commodity[i].commodity_name)+'</span><span id="span_cprice" hidden>'+String(result.Commodity[i].commodity_price)+'</span>加入购物车</a>'+
+                        result.Order[i].order_starttime+
+                        '</td>'+
+                        '<td>'+
+                        result.Order[i].owner_address+
                         '</td>'+
                         '</tr>';
                     $("#tbody").append(trHTML);
