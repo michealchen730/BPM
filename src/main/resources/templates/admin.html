@@ -60,6 +60,9 @@
                 <th>
                     相应操作
                 </th>
+                <th>
+                    相应操作
+                </th>
             </tr>
             </thead>
             <tbody id="tbody">
@@ -131,7 +134,10 @@
                         result.Store[i].store_address+
                         '</td>'+
                         '<td>'+
-                        '<a class="table_a" href="SD/?id=' + String(result.Store[i].store_id) + "\"" + ">" + '操作</a>'+
+                        '<a class="table_a" href="SD/?id=' + String(result.Store[i].id) + "\"" + ">" + '管理</a>'+
+                        '</td>'+
+                        '<td>'+
+                        '<a class="table_a" href="SD/?id=' + String(result.Store[i].id) + "\"" + ">" + '删除</a>'+
                         '</td>'+
                         '</tr>';
                     $("#tbody").append(trHTML);

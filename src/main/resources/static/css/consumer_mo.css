@@ -76,3 +76,31 @@ td{
     margin-top: 25px;
 }
 
+/*页面主内容*/
+#user_detail{
+    margin-top: 90px;
+    margin-left: 100px;
+    margin-right: 100px;
+}
+
+
+/*表格设置*/
+#table_admin_store_manage{
+    margin-top: 35px;
+    margin-bottom: 30px;
+    background: white;
+    padding-left: 15px;
+    text-align: center;
+    font-size: 17px;
+}
+th{
+    text-align: center;
+    vertical-align: middle !important;
+}
+tr{
+    height: 60px;
+}
+
+td{
+    vertical-align: middle !important;
+}

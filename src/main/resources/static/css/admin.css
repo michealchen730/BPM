@@ -73,6 +73,13 @@ td{
 
 /*用户详情页面*/
 #user_detail{
-    margin-top: 51px;
+    margin-top: 90px;
+    margin-left: 100px;
+    margin-right: 100px;
+}
+
+
+#div_store_detail{
+    margin-top: 85px;
 }
 

@@ -1,5 +1,6 @@
 package com.sjtu.springboot.controller;
 
+import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.sjtu.springboot.model.User;
 import com.sjtu.springboot.service.serviceImpl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -186,7 +187,7 @@ public class UserController {
     public String toLogout(HttpSession session) {
         session.removeAttribute("nameofuser");
         session.removeAttribute("idofuser");
-        return "index";
+        return "login";
     }
     /**
      * 去到管理员界面
@@ -266,6 +267,32 @@ public class UserController {
     public String toOrderDetail(){
         return "admin_OD";
     }
+    //订单详情管理
+    @GetMapping("/getpath")
+    public String toPath(){
+        return "path";
+    }
+
+    @GetMapping("/cod")
+    public ModelAndView toConsumerOrderDetail(String id){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("consumer_od");
+        modelAndView.addObject("orderid",id);
+        return modelAndView;
+    }
+
+
+
+//    @PostMapping("/getPath")
+//    public String getPath(@RequestBody String json){
+//        /*JSONPObject rootObject=new JSONPObject(json);
+//
+//
+//        System.out.println("收到请求");
+//        System.out.println(json);*/
+//        return "login";
+//    }
+
 
 
 

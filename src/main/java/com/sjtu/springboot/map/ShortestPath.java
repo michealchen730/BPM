@@ -38,15 +38,19 @@ public class ShortestPath {
     }
 
     public static void main(String[] args){
-        int pnum = 5;
+        int pnum = 9;
 
         Point[] points = new Point[pnum];
-        points[0] = new Point(4,0,4);
-        points[1]=new Point(3,1,2);
-        points[2]=new Point(2,2,-1);
-        points[3]=new Point(1,3,-1);
-        points[4]=new Point(0,4,1);
-        Point START = new Point(0,0,-1);
+        points[0] = new Point(49049,28848,-1);
+        points[1]=new Point(46122,27897,-1);
+        points[2]=new Point(38792,41221,1);
+        points[3]=new Point(43157,29285,-1);
+        points[4]=new Point(29463,40808,3);
+        points[5]=new Point(38612,23692,-1);
+        points[6]=new Point(29229,35528,5);
+        points[7]=new Point(25703,10868,-1);
+        points[8]=new Point(24113,32302,7);
+        Point START = new Point(49049,28848,-1);
         Point END = new Point(0,0,-1);
         int min = calculate(START, END, points, 0, 0);
         System.out.println(min);

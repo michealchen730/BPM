@@ -89,40 +89,76 @@
         </div><!-- /.container-fluid -->
     </nav>
 </div>
-<div class="row">
-    <div class="col-md-1 col-md-offset-9" >
-        <select class="form-control" id="select_orderstate">
-            <option>发布中</option>
-            <option>已接单</option>
-            <option>已完成</option>
-            <option>已取消</option>
-        </select>
-    </div>
-</div>
-<div class="row">
-        <div class="col-md-10 col-md-offset-1">
-            <table class="table table-condensed" id="table_admin_store_manage">
-                <thead>
-                <tr>
-                    <th>订单ID</th>
-                    <th>商家名称</th>
-                    <th>商品总价</th>
-                    <th>收货人姓名</th>
-                    <th>联系方式</th>
-                    <th>收货地址</th>
-                    <th>订单状态</th>
-                    <th>订单生成时间</th>
-                    <th>订单完成时间</th>
-                    <th>操作</th>
-                    <th>取消订单</th>
-                </tr>
-                </thead>
-                <tbody id="tbody">
-                </tbody>
-            </table>
-        </div>
+<div><p id="p_orderid" th:text="${orderid}"></p></div>
+
+
 </div>
 
+
+<div class="container-fluid" id="user_detail">
+    <div class="row" id="div_main">
+        <table class="table table-condensed" id="table_admin_store_manage">
+            <thead>
+            <tr>
+                <th>订单ID</th>
+                <th>商品名称</th>
+                <th>商品数目</th>
+                <th>商品总价</th>
+            </tr>
+            </thead>
+            <tbody id="tbody">
+            </tbody>
+        </table>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="orderid">订单ID</label>
+                <input disabled type="text" class="form-control" id="orderId" placeholder="Jane Doe">
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="ownername">收货人名称</label>
+                <input type="text" class="form-control" id="ownerName" placeholder="Jane Doe">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="phonenumber">联系方式</label>
+                <input type="text" class="form-control" id="phonenumber" placeholder="Jane Doe">
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="userAddress">收货地址</label>
+                <input type="text" class="form-control" id="userAddress" placeholder="Jane Doe">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="totalprice">订单总价</label>
+                <input disabled type="text" class="form-control" id="totalPrice" placeholder="Jane Doe">
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="storename">商家名称</label>
+                <input disabled type="text" class="form-control" id="storeName" placeholder="Jane Doe">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-1 col-md-offset-6">
+            <button type="button" class="btn btn-primary" ><a href="manager_user_add" style="color: black">修改信息</a></button>
+        </div>
+    </div>
+</div>
 
 
 <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
@@ -131,70 +167,49 @@
 <script src="/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="/js/js_mymap.js"></script>
 <script src="/js/js_myshoppingcart.js"></script>
-<script src="/js/js_consumer_mo.js"></script>
 
 <script type="text/javascript">
     $(document).ready(function () {
+
+        var oid=$("#p_orderid").text();
+
+        var sid="#";
+        $.ajax({
+            url: "http://118.31.76.154:8080/Entity/U338ffb3af9551/BPM_H2H/Orderdetail/?Orderdetail.order_id="+oid,
+            contentType: "application/json",
+            type: "GET",
+            async:false,
+            success: function (result) {
+                for(var i=0;i<result.Orderdetail.length;i++){
+                    var trHTML = '<tr>'+
+                        '<td>'+ result.Orderdetail[i].order_id+ '</td>'+
+                        '<td>'+ result.Orderdetail[i].commodity_name+ '</td>'+
+                        '<td>'+ result.Orderdetail[i].number+ '</td>'+
+                        '<td>'+ result.Orderdetail[i].commodity_price+ '</td>'+
+                        '</tr>';
+                    $("#tbody").append(trHTML);
+                }
+            }
+        });
+
+        $.ajax({
+            url: "http://118.31.76.154:8080/Entity/U338ffb3af9551/BPM_H2H/Order/"+oid,
+            contentType: "application/json",
+            type: "GET",
+            async:false,
+            success: function (result) {
+                console.log(result.sender_id);
+                $("#ownerName").val(result.owner_name);
+                $("#orderId").val(result.id);
+                $("#phonenumber").val(result.owner_phonenumber);
+                $("#userAddress").val(result.owner_address);
+                $("#totalPrice").val(result.total_price);
+                $("#storeName").val(result.store_name);
+                sid=result.sender_id;
+            }
+        });
+
         var uid=$("#p_userid").text();
-        var sid=$('p#p_storeid').html();
-
-        //取订单（发布中的）
-        initOrder(uid);
-
-        $("#table_admin_store_manage").delegate("a.a_deleteorder","click",function () {
-            cancelOrder(this,uid);
-        });
-
-        $("#select_orderstate").change(function () {
-           $("#tbody").html("");
-           changeOrderState(this,uid);
-        });
-
-
-        // $.ajax({
-        //     url: "http://118.31.76.154:8080/Entity/U338ffb3af9551/BPM_H2H/Order/?Order.owner_id="+uid,
-        //     contentType: "application/json",
-        //     type: "GET",
-        //     async:false,
-        //     success: function (result) {
-        //
-        //         for (var i=0;i<result.Order.length;i++) {
-        //             var endtime="订单进行中";
-        //             console.log(result.Order[i].order_endtime);
-        //             if(String(result.Order[i].order_endtime)==="undefined"){
-        //                 console.log("true");
-        //             }else{
-        //                 endtime=result.Order[i].order_endtime;
-        //             }
-        //             var state="#";
-        //             if(result.Order[i].order_state==="0"){
-        //                 state="已发布";
-        //             }else if(result.Order[i].order_state==="1"){
-        //                 state="已接单";
-        //             }else if(result.Order[i].order_state==="2"){
-        //                 state="已完成";
-        //             }else{
-        //                 state="已取消";
-        //             }
-        //             var trHTML = '<tr>'+
-        //                 '<td>'+ result.Order[i].id+ '</td>'+
-        //                 '<td>'+ result.Order[i].store_name+ '</td>'+
-        //                 '<td>'+ result.Order[i].total_price+"元"+ '</td>'+
-        //                 '<td>'+ result.Order[i].owner_name+ '</td>'+
-        //                 '<td>'+ result.Order[i].owner_phonenumber+ '</td>'+
-        //                 '<td>'+ result.Order[i].owner_address+ '</td>'+
-        //                 '<td>'+ state+ '</td>'+
-        //                 '<td>'+ result.Order[i].order_starttime+ '</td>'+
-        //                 '<td>'+ endtime+ '</td>'+
-        //                 '<td>'+ '<a href="#">操作</a>'+ '</td>'+
-        //                 '<td>'+ '<a href="#">取消</a>'+ '</td>'+
-        //                 '</tr>';
-        //             $("#tbody").append(trHTML);
-        //         }
-        //     }
-        // });
-
-
 
         $("a#myShoppingCart").click(function () {
             getShoppingCart();
