@@ -54,6 +54,40 @@ function cancelOrder(DOM,uid) {
 }
 
 
+function finishOrder(DOM,uid) {
+    var oid=$(DOM).children("span").text();
+    var order2finish;
+    $.ajax({
+        url: "http://118.31.76.154:8080/Entity/U338ffb3af9551/BPM_H2H/Order/"+oid,
+        contentType: "application/json",
+        type: "GET",
+        async:false,
+        success: function (result) {
+            order2finish=result;
+        }
+    });
+
+    var date=new Date();
+    var endtime=String(date);
+
+    order2finish.order_state="2";
+    order2finish.order_endtime=endtime;
+    $.ajax({
+        url: "http://118.31.76.154:8080/Entity/U338ffb3af9551/BPM_H2H/Order/"+oid,
+        contentType: "application/json",
+        type: "PUT",
+        async:false,
+        data: JSON.stringify(order2finish),
+        success: function (result) {
+            alert("订单已确认完成");
+            initOrder(uid);
+        }
+    });
+}
+
+
+
+
 function changeOrderState(DOM,uid){
     var state=$(DOM).children('option:selected').val();
     if(state==="发布中"){
@@ -76,7 +110,7 @@ function changeOrderState(DOM,uid){
                         '<td>'+ '已接单'+ '</td>'+
                         '<td>'+ result.Order[i].order_starttime+ '</td>'+
                         '<td>'+ '订单进行中'+ '</td>'+
-                        '<td>'+ '<a href="#">确认收货</a>'+ '</td>'+
+                        '<td>'+ '<a href="#" class="a_finishorder"><span hidden>'+result.Order[i].id+'</span>确认收货</a>'+ '</td>'+
                         '<td>'+ '<a href="#">取消</a>'+ '</td>'+
                         '</tr>';
                     $("#tbody").append(trHTML);
@@ -98,9 +132,9 @@ function changeOrderState(DOM,uid){
                         '<td>'+ result.Order[i].owner_name+ '</td>'+
                         '<td>'+ result.Order[i].owner_phonenumber+ '</td>'+
                         '<td>'+ result.Order[i].owner_address+ '</td>'+
-                        '<td>'+ '已接单'+ '</td>'+
+                        '<td>'+ '已完成'+ '</td>'+
                         '<td>'+ result.Order[i].order_starttime+ '</td>'+
-                        '<td>'+ '订单进行中'+ '</td>'+
+                        '<td>'+ result.Order[i].order_endtime+ '</td>'+
                         '<td>'+ '<a href="#">操作</a>'+ '</td>'+
                         '<td>'+ '<a href="#">取消</a>'+ '</td>'+
                         '</tr>';

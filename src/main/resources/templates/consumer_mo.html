@@ -145,6 +145,12 @@
             cancelOrder(this,uid);
         });
 
+        $("#table_admin_store_manage").delegate("a.a_finishorder","click",function () {
+            finishOrder(this,uid);
+            $("#select_orderstate").val("发布中");
+        });
+
+
         $("#select_orderstate").change(function () {
            $("#tbody").html("");
            changeOrderState(this,uid);

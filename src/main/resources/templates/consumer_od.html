@@ -89,10 +89,7 @@
         </div><!-- /.container-fluid -->
     </nav>
 </div>
-<div><p id="p_orderid" th:text="${orderid}"></p></div>
-
-
-</div>
+<div><p hidden id="p_orderid" th:text="${orderid}"></p></div>
 
 
 <div class="container-fluid" id="user_detail">
@@ -155,7 +152,7 @@
     </div>
     <div class="row">
         <div class="col-md-1 col-md-offset-6">
-            <button type="button" class="btn btn-primary" ><a href="manager_user_add" style="color: black">修改信息</a></button>
+            <button type="button" class="btn btn-primary" id="orderinfo_update"><a href="#" style="color: black">修改信息</a></button>
         </div>
     </div>
 </div>
@@ -167,47 +164,21 @@
 <script src="/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="/js/js_mymap.js"></script>
 <script src="/js/js_myshoppingcart.js"></script>
+<script src="/js/js_consumer_od.js"></script>
 
 <script type="text/javascript">
     $(document).ready(function () {
 
+        var o2u;
+
         var oid=$("#p_orderid").text();
 
         var sid="#";
-        $.ajax({
-            url: "http://118.31.76.154:8080/Entity/U338ffb3af9551/BPM_H2H/Orderdetail/?Orderdetail.order_id="+oid,
-            contentType: "application/json",
-            type: "GET",
-            async:false,
-            success: function (result) {
-                for(var i=0;i<result.Orderdetail.length;i++){
-                    var trHTML = '<tr>'+
-                        '<td>'+ result.Orderdetail[i].order_id+ '</td>'+
-                        '<td>'+ result.Orderdetail[i].commodity_name+ '</td>'+
-                        '<td>'+ result.Orderdetail[i].number+ '</td>'+
-                        '<td>'+ result.Orderdetail[i].commodity_price+ '</td>'+
-                        '</tr>';
-                    $("#tbody").append(trHTML);
-                }
-            }
-        });
 
-        $.ajax({
-            url: "http://118.31.76.154:8080/Entity/U338ffb3af9551/BPM_H2H/Order/"+oid,
-            contentType: "application/json",
-            type: "GET",
-            async:false,
-            success: function (result) {
-                console.log(result.sender_id);
-                $("#ownerName").val(result.owner_name);
-                $("#orderId").val(result.id);
-                $("#phonenumber").val(result.owner_phonenumber);
-                $("#userAddress").val(result.owner_address);
-                $("#totalPrice").val(result.total_price);
-                $("#storeName").val(result.store_name);
-                sid=result.sender_id;
-            }
-        });
+        //初始化订单商品
+        initOrderItems(oid);
+        //获取订单基本信息
+        o2u=getOrderInfo(oid);
 
         var uid=$("#p_userid").text();
 
@@ -216,6 +187,30 @@
         });
         $("a#settleAccounts").click(function () {
             settleAccounts();
+        });
+
+
+
+        $("#orderinfo_update").click(function () {
+            var oname=$("#ownerName").val();
+            var pho=$("#phonenumber").val();
+            var oadd=$("#userAddress").val();
+            console.log(oname+pho+oadd);
+            o2u.owner_name=oname;
+            o2u.owner_phonenumber=pho;
+            o2u.owner_address=oadd;
+            $.ajax({
+                url: "http://118.31.76.154:8080/Entity/U338ffb3af9551/BPM_H2H/Order/"+oid,
+                contentType: "application/json",
+                type: "PUT",
+                async:false,
+                data: JSON.stringify(o2u),
+                success: function (result) {
+                    alert("订单信息修改成功");
+                }
+            });
+            o2u=getOrderInfo(oid);
+
         })
 
     });
